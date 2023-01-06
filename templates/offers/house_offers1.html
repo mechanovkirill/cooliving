@@ -1,0 +1,77 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<!-- ========================= SECTION MAIN ========================= -->
+<section class="section-intro py-2">
+
+<div class="card mx-auto" style="max-width:600px; margin-top:40px;">
+      <article class="card-body">
+         <div class="row">
+            <form method="get" name="country_sel" action="">
+                <label for="CountryDataList" class="form-label"></label>
+                <input name="country_select" type="search" class="form-control col-sm my-1" list="datalistOptions" id="CountryDataList" placeholder="Выберите страну">
+                <button class="btn btn-outline-success col-sm my-1" type="submit">Выбрать/Select</button>
+                <datalist id="datalistOptions">
+                    {% for country in countries %}
+                      <option value="{{ country.country }}">
+                    {% endfor %}
+                </datalist>
+            </form>
+        </div>
+        <div class="row">
+            <form method="get" name="city_sel" action="">
+               <label for="CityDataList" class="form-label"></label>
+                <input name="city_select" type="search" class="form-control col-sm my-1" list="datalistOptions1" id="CityDataList" placeholder="Выберите город">
+                <button class="btn btn-outline-success col-sm my-1" type="submit">Выбрать/Select</button>
+                <datalist id="datalistOptions1">
+                    {% for city in city_qs %}
+                      <option value="{{ city.city }}">
+                    {% endfor %}
+                </datalist>
+            </form>
+
+            <form method="get" name="city_sel" action="">
+                <select name="gender_living_select" class="form-select my-1" aria-label="Default select example">
+                  <option value="" disabled selected>Живут...</option>
+                     {% for offer in qs %}
+                        <option value="{{ offer.gender_of_living }}">{{ offer.gender_of_living }}</option>
+                      {% endfor %}
+                </select>
+                <select name="house_type" class="form-select my-1" aria-label="Default select example">
+                  <option value="" disabled selected>Тип жилья...</option>
+                     {% for offer in qs %}
+                        <option value="{{ offer.house_type }}">{{ offer.get_house_type_display }}</option>
+                      {% endfor %}
+                </select>
+             <button class="btn btn-outline-success col-sm my-1" type="submit">Искать по параметрам/Select</button>
+             </form>
+            </div>
+
+
+
+      </article>
+</div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION MAIN END// ========================= -->
+<ul>
+   {% if qs != None %}
+    {% for offer in qs %}
+        <hr>
+       <li>{{ offer.name }} | {{ offer.city }} | {{ offer.house_type }} | {{ offer.cost_per_person }} | {{ offer.desired_gender }} | {{ offer.heating }}</li>
+        <hr>
+    {% endfor %}
+   {% else %}
+       <h5>К сожалению по вашему запросу не найдено результатов...</h5>
+   {% endif %}
+
+</ul>
+<!-- ========================= SECTION  ========================= -->
+<section class="section-name padding-y-sm">
+
+</section>
+<!-- ========================= SECTION  END// ========================= -->
+
+
+{% endblock %}
+
