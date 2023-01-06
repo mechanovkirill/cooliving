@@ -26,6 +26,13 @@ def filters(request):
     furniture = request.GET.get('furniture-sel')
     heating = request.GET.get('heating-sel')
     internet_options = listing_queryparams(request, 'internet_op')
+    number_of_living = request.GET.get('number_living')
+    free_space = request.GET.get('freespace')
+    min_cost = request.GET.get('min_cost')
+    max_cost = request.GET.get('max_cost')
+    min_rental_period = request.GET.get('min_rental_period')
+    max_rental_period = request.GET.get('max_rental_period')
+    with_animals = request.GET.get('with_animals')
 
     qs = Offer.objects.all().filter(city__city=CITY_SELECTED[0])
 
@@ -52,6 +59,27 @@ def filters(request):
 
     if internet_options:
         qs = qs.filter(internet__in=internet_options)
+
+    if is_valid_queryparam(number_of_living):
+        qs = qs.filter(count_of_living__lte=number_of_living)
+
+    if is_valid_queryparam(free_space):
+        qs = qs.filter(wanted_quantity_of_person__lte=free_space)
+
+    if is_valid_queryparam(min_cost):
+        qs = qs.filter(cost_per_person__gte=min_cost)
+
+    if is_valid_queryparam(max_cost):
+        qs = qs.filter(cost_per_person__lte=max_cost)
+
+    if is_valid_queryparam(min_rental_period):
+        qs = qs.filter(rental_period__gte=min_rental_period)
+
+    if is_valid_queryparam(max_rental_period):
+        qs = qs.filter(rental_period__lte=max_rental_period)
+
+    if is_valid_queryparam(with_animals):
+        qs = qs.filter(with_animals=with_animals)
 
     return qs
 
