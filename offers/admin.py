@@ -1,23 +1,15 @@
 from django.contrib import admin
-from .models import Offer, OfferGallery, City, Countries
-import admin_thumbnails
-
-
-@admin_thumbnails.thumbnail('photo')
-class OfferGalleryInline(admin.TabularInline):
-    model = OfferGallery
-    extra = 1
+from .models import Offer, City, Countries
 
 
 class OfferAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'city', 'desired_gender', 'gender_of_living', 'house_type',
-        'number_of_rooms', 'interior_condition', 'heating', 'count_of_living', 'internet',
-        'furniture', 'created_date', 'modified_date', 'wanted_quantity_of_person', 'total_cost',
-        'cost_per_person', 'rental_period', 'with_animals',
+        'name', 'city', 'lodger_desired_sex', 'sex_of_living_lodgers', 'house_type',
+        'number_of_rooms', 'interior_condition', 'heating', 'number_of_lodgers', 'internet',
+        'furniture', 'appliances', 'created_date', 'modified_date', 'free_space_for_num_person', 'total_cost',
+        'cost_per_person', 'min_rental_period', 'with_animals', 'with_kids', 'separate_room', 'has_balcony',
+        'has_loggia', 'has_parking', 'can_smoke', 'is_active',
     )
-    prepopulated_fields = {'slug': ('name',)}
-    inlines = [OfferGalleryInline]
 
 
 admin.site.register(Offer, OfferAdmin)

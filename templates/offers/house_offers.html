@@ -4,18 +4,17 @@
 
 <!-- ========================= SECTION MAIN ========================= -->
 <section class="section-content">
-<div class="container">
 <!--==============selecting country and city=================-->
 <div class="row col-12 mb-2">
     <div class="float-start">
-        <div class="card">
+        <div class="card border-success">
             <div class="card-body">
 
 <div class="row">
   <div class="col">
             <form method="get" name="country_sel" action="">
-                <input name="country_select" type="search" class="form-control border-success" list="datalistOptions" id="CountryDataList" placeholder="{{ placeholder_country }}" onchange='if(this.value != 0) { this.form.submit(); }'>
-                <datalist id="datalistOptions">
+                <input name="country_select" type="search" class="form-control border-success" list="CountrydatalistOptions" id="CountryDataList" placeholder="{{ placeholder_country }}" onchange='if(this.value != 0) { this.form.submit(); }'>
+                <datalist id="CountrydatalistOptions">
                     {% for country in countries %}
                       <option value="{{ country.country }}">
                     {% endfor %}
@@ -24,8 +23,8 @@
   </div>
   <div class="col">
     <form method="get" name="city_sel" action="">
-                <input name="city_select" type="search" class="form-control border-success" list="datalistOptions1" id="CityDataList" placeholder="{{ placeholder_city }}" onchange='if(this.value != 0) { this.form.submit(); }'>
-                <datalist id="datalistOptions1">
+                <input name="city_select" type="search" class="form-control border-success" list="CitydatalistOptions1" id="CityDataList" placeholder="{{ placeholder_city }}" onchange='if(this.value != 0) { this.form.submit(); }'>
+                <datalist id="CitydatalistOptions1">
                     {% for city in city_qs %}
                       <option value="{{ city.city }}">
                     {% endfor %}
@@ -47,76 +46,98 @@
             </div>
             <div class="card-body">
 
-        <form method="get" name="filters_form" action="">
-         <div class="row">
-           <div class="col">
-              <select name="sex" class="form-select mb-1" aria-label="Default select example">
+    <form method="get" name="filters_form" action="">
+       <div class="row">
+          <div class="col">
+
+<!--sex-->
+              <select name="sex" class="form-select mb-2" aria-label="sex">
                   <option value="" disabled selected>Ваш пол</option>
                   <option value=1>Женский | Female</option>
                   <option value=2>Мужской | Male</option>
-                  <option value=3>Смешанно | Mixed</option>
-{#                  <option value=4>Не важно | Doesn't matter</option>#}
+                  <option value=3>Мужчины и женщины | Men & women</option>
               </select>
-
-         <select name="gender_of_living" class="form-select mb-1" aria-label="Default select example">
+<!--sex//-->
+<!--genderliving-->
+         <select name="gender_of_living" class="form-select" aria-label="gender_of_living">
               <option value="" disabled selected>Вам подойдет жить с...</option>
               <option value=1>Женщинами | Female</option>
               <option value=2>Мужчинами | Male</option>
               <option value=3>Смешанно | Mixed</option>
-{#              <option value=4>Не важно | Doesn't matter</option>#}
+              <option value=4>Ни с кем | Without anyone</option>
           </select>
-
+<!--genderliving//-->
+<hr>
+<!--with_kids-->
+               <label class="form-check-label" for="">С детьми | With kids</label>
+         <div class="form-check">
+              <input name="with_kids" class="form-check-input" type="radio" id="with_kids" value='True'>
+              <label class="form-check-label" for="with_kids">да | yes</label>
+         </div>
+          <div class="form-check">
+             <input name="with_kids" class="form-check-input" type="radio" id="with_kids_2" value='False'>
+              <label class="form-check-label" for="with_kids_2">нет | no</label>
+          </div>
+<!--with_kids//-->
+   <hr>
 <!--house_type-->
        <label class="form-check-label" for="">Тип жилья</label>
          <div class="form-check">
-              <input name="house_type_1" class="form-check-input" type="checkbox" id="inlineCheckbox1" value=1>
-              <label class="form-check-label" for="inlineCheckbox1">Квартира</label>
+              <input name="house_type_1" class="form-check-input" type="checkbox" id="typeCheckbox1" value='1'>
+              <label class="form-check-label" for="typeCheckbox1">Квартира</label>
             </div>
             <div class="form-check">
-              <input name="house_type_2"  class="form-check-input" type="checkbox" id="inlineCheckbox2" value=2>
-              <label class="form-check-label" for="inlineCheckbox2">Дом</label>
+              <input name="house_type_2"  class="form-check-input" type="checkbox" id="typeCheckbox2" value='2'>
+              <label class="form-check-label" for="typeCheckbox2">Дом</label>
         </div>
            <div class="form-check ">
-              <input name="house_type_3"  class="form-check-input" type="checkbox" id="inlineCheckbox1" value=3>
-              <label class="form-check-label" for="inlineCheckbox1">Комната</label>
+              <input name="house_type_3"  class="form-check-input" type="checkbox" id="typeCheckbox2" value='3'>
+              <label class="form-check-label" for="typeCheckbox2">Комната</label>
             </div>
 <!--house_type//-->
+               <hr>
 <!--rooms-->
        <label class="form-check-label" for="">Количество комнат</label>
          <div class="form-check">
-              <input name="n_rooms_1" class="form-check-input" type="checkbox" id="inlineCheckbox1" value=1>
-              <label class="form-check-label" for="inlineCheckbox1">1</label>
+              <input name="n_rooms_5" class="form-check-input" type="checkbox" id="roomsCheckbox5" value='5'>
+              <label class="form-check-label" for="roomsCheckbox5">Студия | Studio</label>
+            </div>
+         <div class="form-check">
+              <input name="n_rooms_1" class="form-check-input" type="checkbox" id="roomsCheckbox1" value='1'>
+              <label class="form-check-label" for="roomsCheckbox1">1</label>
             </div>
             <div class="form-check">
-              <input name="n_rooms_2"  class="form-check-input" type="checkbox" id="inlineCheckbox2" value=2>
-              <label class="form-check-label" for="inlineCheckbox2">2</label>
+              <input name="n_rooms_2"  class="form-check-input" type="checkbox" id="roomsCheckbox2" value='2'>
+              <label class="form-check-label" for="roomsCheckbox2">2</label>
         </div>
            <div class="form-check ">
-              <input name="n_rooms_3"  class="form-check-input" type="checkbox" id="inlineCheckbox1" value=3>
-              <label class="form-check-label" for="inlineCheckbox1">3</label>
+              <input name="n_rooms_3"  class="form-check-input" type="checkbox" id="roomsCheckbox3" value='3'>
+              <label class="form-check-label" for="roomsCheckbox3">3</label>
             </div>
            <div class="form-check ">
-              <input name="n_rooms_4"  class="form-check-input" type="checkbox" id="inlineCheckbox1" value=4>
-              <label class="form-check-label" for="inlineCheckbox1">4+</label>
+              <input name="n_rooms_4"  class="form-check-input" type="checkbox" id="roomsCheckbox4" value='4'>
+              <label class="form-check-label" for="roomsCheckbox4">4+</label>
             </div>
 <!--rooms//-->
+               <hr>
  <!--interior-->
-               <select name="interior_condition" class="form-select mb-1" aria-label="Default select example">
+               <select name="interior_condition" class="form-select mb-2" aria-label="interior_condition">
                   <option value="" disabled selected>Состояние отделки | interior condition</option>
-                  <option value=1>Новый ремонт | good interior condition</option>
-                  <option value=2>Старый ремонт | old interior</option>
+                  <option value='1'>Новый ремонт | Good interior condition</option>
+                  <option value='2'>Без ремонта | Old interior</option>
+                   <option value='3'>Требуется ремонт | Repair required</option>
                </select>
 <!--interior//-->
  <!--furniture-->
-         <select name="furniture-sel" class="form-select mb-1" aria-label="Default select example">
+         <select name="furniture" class="form-select mb-2" aria-label="furniture">
               <option value="" disabled selected>Мебель | Furniture</option>
-              <option value=1>Полностью мебелирована | Fully furnished</option>
-              <option value=2>Частично мебелирована | Partially furnished</option>
+              <option value=1>Мебель полностью | Fully furnished</option>
+              <option value=2>Мебель частично | Partially furnished</option>
               <option value=3>Без мебели | Without furniture</option>
          </select>
 <!--furniture//-->
 <!--heating-->
-         <select name="heating-sel" class="form-select mb-1" aria-label="Default select example">
+         <select name="heating" class="form-select" aria-label="heating">
               <option value="" disabled selected>Отопление | Heating</option>
               <option value=1>Центральное | Central heating</option>
               <option value=2>Электрическое | Electric heating</option>
@@ -127,29 +148,33 @@
               <option value=7>Другое | Other</option>
          </select>
 <!--heating//-->
+               <hr>
 <!--internet-->
                <label class="form-check-label" for="">Интернет | Internet</label>
          <div class="form-check">
-              <input name="internet_op_1" class="form-check-input" type="checkbox" id="inlineCheckbox1" value=1>
-              <label class="form-check-label" for="inlineCheckbox1">Ethernet/ GPON(optic)</label>
+              <input name="internet_op_1" class="form-check-input" type="checkbox" id="inetlineCheckbox1" value=1>
+              <label class="form-check-label" for="inetlineCheckbox1">Ethernet/ GPON(optic)</label>
             </div>
             <div class="form-check">
-              <input name="internet_op_2"  class="form-check-input" type="checkbox" id="inlineCheckbox2" value=2>
-              <label class="form-check-label" for="inlineCheckbox2">ADSL</label>
+              <input name="internet_op_2"  class="form-check-input" type="checkbox" id="inetlineCheckbox2" value=2>
+              <label class="form-check-label" for="inetlineCheckbox2">ADSL</label>
         </div>
            <div class="form-check ">
-              <input name="internet_op_3"  class="form-check-input" type="checkbox" id="inlineCheckbox1" value=3>
-              <label class="form-check-label" for="inlineCheckbox1">Отсутствует | No internet</label>
+              <input name="internet_op_3"  class="form-check-input" type="checkbox" id="inetlineCheckbox3" value=3>
+              <label class="form-check-label" for="inetlineCheckbox3">Отсутствует | No internet</label>
             </div>
 <!--internet//-->
+               <hr>
 <!--MaxLiving-->
                <label for="number_living" class="form-label">Максимум проживающих | Max. lodgers</label>
                <input name="number_living" class="form-control" type="text" placeholder="Введите число | Input number" id="number_living" aria-label=" input number_living">
 <!--MaxLiving//-->
+               <hr>
 <!--freespace-->
                <label for="freespace" class="form-label">Свободно мест для... | free space for ... person</label>
                <input name="freespace" class="form-control" type="text" placeholder="Введите число | Input number" id="freespace" aria-label=" input freespace">
 <!--freespace//-->
+               <hr>
 <!--MinMaxCoast-->
              <div class="row">
                <label for="min_cost" class="form-label">Минимальная и/или максимальная сумма аренды на человека в USD/месяц | Minimum and/or maximum rental amount per person, USD/month</label>
@@ -161,17 +186,13 @@
                </div>
             </div>
 <!--MinMaxCoast//-->
+               <hr>
 <!--MinMaxRentalPeriod-->
-             <div class="row">
-               <label for="min_rental_period" class="form-label">Минимальный и/или максимальный срок аренды в месяцах | Minimum and/or maximum rental period in months</label>
-               <div class="col">
+               <label for="min_rental_period" class="form-label">Минимальный срок аренды в месяцах не более | Minimum rental period in months no more </label>
                    <input name="min_rental_period" class="form-control" type="text" placeholder="Min months" id="min_rental_period" aria-label="input min_rental_period">
-               </div>
-               <div class="col">
-                   <input name="max_rental_period" class="form-control" type="text" placeholder="Max months" id="max_rental_period" aria-label="input max_rental_period">
-               </div>
-            </div>
+
 <!--MinMaxRentalPeriod//-->
+               <hr>
 <!--WithAnimals-->
              <label class="form-check-label" for="">С животными | With animals</label>
          <div class="form-check">
@@ -184,9 +205,16 @@
           </div>
 <!--WithAnimals//-->
       </div><!--col//-->
+             <button class="btn btn-success my-1 float-start" type="submit" >Искать | Search</button>
     </div><!--row//-->
-    <button class="btn btn-outline-success my-1 float-start" type="submit" >Искать | Search</button>
 </form>
+<!--DiscardFilters-->
+            <form method="get">
+                <div class="row">
+                    <button name="discard_filters" type="submit" class="btn btn-outline-secondary" value="True" style="float: right">Сбросить фильтры | Discard filters</button>
+                </div>
+            </form>
+<!--DiscardFilters//-->
             </div>
         </div>
         <div class="card-col-8">
@@ -196,7 +224,7 @@
                    {% if qs %}
                         {% for offer in qs %}
                             <hr>
-                           <li>{{ offer.name }} | {{ offer.city }} | {{ offer.house_type }} | {{ offer.cost_per_person }} | {{ offer.desired_gender }} | {{ offer.heating }}</li>
+                           <li>{{ offer.name }} | {{ offer.city }} | {{ offer.get_house_type_display }} | {{ offer.cost_per_person }} | {{ offer.get_lodger_desired_sex_display }} | {{ offer.get_sex_of_living_lodgers_display }} | {{ offer.get_heating_display }} | {{ offer.get_with_kids_display }}</li>
                             <hr>
                         {% endfor %}
                    {% else %}
@@ -209,7 +237,6 @@
     </div><!--start//-->
 </div><!--row//-->
 <!-- ========================= FILTERS END// ========================= -->
-</div>
 </section>
 <!-- ========================= SECTION  END// ========================= -->
 

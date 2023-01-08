@@ -14,33 +14,33 @@ def listing_queryparams(request, re):
         if str(param).startswith(re):
             if param != '' and param is not None:
                 res.append(value)
-    return [int(v) for v in res if v]
+    return [v for v in res if v]
 
 
 def filters(request):
-    gender_of_living = request.GET.get('gender_living_select')
+    gender_of_living = request.GET.get('gender_of_living')
     house_type = listing_queryparams(request, 'house_type')
     sex = request.GET.get('sex')
     number_of_rooms = listing_queryparams(request, 'n_rooms')
     interior_condition = request.GET.get('interior_condition')
-    furniture = request.GET.get('furniture-sel')
-    heating = request.GET.get('heating-sel')
+    furniture = request.GET.get('furniture')
+    heating = request.GET.get('heating')
     internet_options = listing_queryparams(request, 'internet_op')
     number_of_living = request.GET.get('number_living')
     free_space = request.GET.get('freespace')
     min_cost = request.GET.get('min_cost')
     max_cost = request.GET.get('max_cost')
     min_rental_period = request.GET.get('min_rental_period')
-    max_rental_period = request.GET.get('max_rental_period')
     with_animals = request.GET.get('with_animals')
+    discard_filters = request.GET.get('discard_filters')
 
-    qs = Offer.objects.all().filter(city__city=CITY_SELECTED[0])
+    qs = Offer.objects.all().filter(is_active=True).filter(city__city=CITY_SELECTED[0])
 
     if is_valid_queryparam(sex):
-        qs = qs.filter(desired_gender=sex)
+        qs = qs.filter(lodger_desired_sex=sex)
 
     if is_valid_queryparam(gender_of_living):
-        qs = qs.filter(gender_of_living=gender_of_living)
+        qs = qs.filter(sex_of_living_lodgers=gender_of_living)
 
     if house_type:
         qs = qs.filter(house_type__in=house_type)
@@ -73,13 +73,13 @@ def filters(request):
         qs = qs.filter(cost_per_person__lte=max_cost)
 
     if is_valid_queryparam(min_rental_period):
-        qs = qs.filter(rental_period__gte=min_rental_period)
-
-    if is_valid_queryparam(max_rental_period):
-        qs = qs.filter(rental_period__lte=max_rental_period)
+        qs = qs.filter(rental_period__lte=min_rental_period)
 
     if is_valid_queryparam(with_animals):
         qs = qs.filter(with_animals=with_animals)
+
+    if is_valid_queryparam(discard_filters):
+        qs = Offer.objects.all().filter(is_active=True).filter(city__city=CITY_SELECTED[0])
 
     return qs
 
