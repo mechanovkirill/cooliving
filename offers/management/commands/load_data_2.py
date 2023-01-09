@@ -61,6 +61,14 @@ APPLIANCES = [
         'Отсутствует | No appliances',
          'Необходимое и дополнительно | Necessary+'
     ]
+
+photos = ['/home/certo/coliving/data/Pict/1.jpg',
+          '/home/certo/coliving/data/Pict/2.jpg',
+          '/home/certo/coliving/data/Pict/5fccbca8e1468b36c84fc0b39caf219f.jpg',
+          '/home/certo/coliving/data/Pict/sk_mv.ru_project_Kirpolie_HOME.jpg',
+          '/home/certo/coliving/data/Pict/Без названия.jfif',
+          '/home/certo/coliving/data/Pict/Без названия (1).jfif',
+          ]
 class Command(BaseCommand):
 
     def handle(self, *args, **options):
@@ -94,6 +102,7 @@ class Command(BaseCommand):
             offer.can_smoke = choice(ch)
             offer.contacts = "skdfdsfvkjdnvkjdfvsdf"
             offer.description = 'djfnsclksdjveruhvjnkdbvlkzxckvjb'
+            offer.photo_1 = choice(photos)
             offer.save()
 
         print('finished')

@@ -91,12 +91,14 @@ def filters(request):
     except:
         pass
 
+
 def offers(request):
     qs = None
     country = request.GET.get('country_select')
     city = request.GET.get('city_select')
     placeholder_country = 'Сперва выберите страну | First select a country'
     placeholder_city = ''
+    already_hint = ''
     city_qs = None
     countries = Countries.objects.all()
 
@@ -111,9 +113,9 @@ def offers(request):
         CITY_SELECTED.clear()
         CITY_SELECTED.append(city)
 
-    if CITY_SELECTED:
-        placeholder_country = ''
-        placeholder_city = f'{CITY_SELECTED[0]}'
+    if COUNTRY_SELECTED and CITY_SELECTED:
+        placeholder_country = f'Выбрана страна | Selected country {COUNTRY_SELECTED[0]}'
+        placeholder_city = f'Выбран город | Selected city {CITY_SELECTED[0]}'
         qs = filters(request)
 
     context = {
@@ -122,6 +124,7 @@ def offers(request):
         'city_qs': city_qs,
         'placeholder_country': placeholder_country,
         'placeholder_city': placeholder_city,
+        'already_hint': already_hint,
     }
 
     return render(request, 'offers/house_offers.html', context=context)

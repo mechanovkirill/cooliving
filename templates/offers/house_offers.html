@@ -218,18 +218,28 @@
             </div>
         </div>
 <!-- ========================= FILTERS END// ========================= -->
-<!-- ========================= QUERYSET ========================= -->
+    <!--============== SELECTED =================-->
+    {% if already_hint %}
+        <div class="card border-0">
+            <div class="card-body">
+                 <h6>{{ already_hint }}</h6>
+            </div>
+        </div>
+    {% else %}
+    {% endif %}
+<!--============== SELECTED //=================-->
+<!-- ========================= QUERYSET DISPLAY ========================= -->
        <div class="col">
         {% for offer in qs %}
            <hr>
             <div class="card col-9 border-0">
               <div class="row g-0">
                 <div class="col-md-3">
-                  <img src="..." class="img-fluid rounded-start" alt="...">
+                  <img src="{{ offer.photo_1 }}" class="img-fluid rounded-start" alt="photo">
                 </div>
                 <div class="col-md-9">
                   <div class="card-body">
-                        <h5 class="card-title">{{ offer.name }}, для {{ offer.get_lodger_desired_sex_display }}</h5>
+                        <h5 class="card-title">{{ offer.name }}</h5>
                         <p class="card-text">
                             <div class="row">
                                <div class="col">
@@ -262,7 +272,7 @@
         </div>
    </div><!--start//-->
 </div><!--row//-->
-<!-- ========================= QUERYSET END// ========================= -->
+<!-- ========================= QUERYSET DISPLAY END// ========================= -->
 </section>
 <!-- ========================= SECTION  END// ========================= -->
 

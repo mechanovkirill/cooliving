@@ -91,6 +91,7 @@ class Offer(models.Model):
     district = models.CharField(max_length=50, null=True, blank=True)
     house_type = models.CharField(max_length=2, choices=HOUSE_TYPES)
     number_of_rooms = models.CharField(max_length=2, choices=ROOMS)
+    house_area = models.FloatField(max_length=7, default=0) # TODO: delete default before deployment
     interior_condition = models.CharField(max_length=2, choices=INTERIOR)
     furniture = models.CharField(max_length=2, choices=FURNITURE)
     appliances = models.CharField(max_length=2, choices=APPLIANCES)
