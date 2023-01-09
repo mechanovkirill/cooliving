@@ -40,7 +40,7 @@
         <!--==============FILTERS=================-->
 <div class="row col-12">
     <div class="float-start">
-        <div class="card col-4" style="float: right;">
+        <div class="card col-3" style="float: right;">
             <div class="card-title mb-0">
                <div class="card-header bg-success text-white">Filters | Фильтры</div>
             </div>
@@ -75,8 +75,8 @@
               <label class="form-check-label" for="with_kids">да | yes</label>
          </div>
           <div class="form-check">
-             <input name="with_kids" class="form-check-input" type="radio" id="with_kids_2" value='False'>
-              <label class="form-check-label" for="with_kids_2">нет | no</label>
+             <input name="with_kids" class="form-check-input" type="radio" id="with_kids" value='False'>
+              <label class="form-check-label" for="with_kids">нет | no</label>
           </div>
 <!--with_kids//-->
    <hr>
@@ -171,7 +171,7 @@
 <!--MaxLiving//-->
                <hr>
 <!--freespace-->
-               <label for="freespace" class="form-label">Свободно мест для... | free space for ... person</label>
+               <label for="freespace" class="form-label">Свободны места для ... человек | free space for ... person</label>
                <input name="freespace" class="form-control" type="text" placeholder="Введите число | Input number" id="freespace" aria-label=" input freespace">
 <!--freespace//-->
                <hr>
@@ -217,26 +217,52 @@
 <!--DiscardFilters//-->
             </div>
         </div>
-        <div class="card-col-8">
-            <div class="card-body">
-<!-- ========================= QUERYSET ========================= -->
-                <ul>
-                   {% if qs %}
-                        {% for offer in qs %}
-                            <hr>
-                           <li>{{ offer.name }} | {{ offer.city }} | {{ offer.get_house_type_display }} | {{ offer.cost_per_person }} | {{ offer.get_lodger_desired_sex_display }} | {{ offer.get_sex_of_living_lodgers_display }} | {{ offer.get_heating_display }} | {{ offer.get_with_kids_display }}</li>
-                            <hr>
-                        {% endfor %}
-                   {% else %}
-                       <h5>К сожалению по вашему запросу не найдено результатов, проверьте выбран ли город</h5>
-                   {% endif %}
-                </ul>
-<!-- ========================= QUERYSET END// ========================= -->
-            </div>
-        </div>
-    </div><!--start//-->
-</div><!--row//-->
 <!-- ========================= FILTERS END// ========================= -->
+<!-- ========================= QUERYSET ========================= -->
+       <div class="col">
+        {% for offer in qs %}
+           <hr>
+            <div class="card col-9 border-0">
+              <div class="row g-0">
+                <div class="col-md-3">
+                  <img src="..." class="img-fluid rounded-start" alt="...">
+                </div>
+                <div class="col-md-9">
+                  <div class="card-body">
+                        <h5 class="card-title">{{ offer.name }}, для {{ offer.get_lodger_desired_sex_display }}</h5>
+                        <p class="card-text">
+                            <div class="row">
+                               <div class="col">
+                                   <dl class="row">
+                                      <dt class="col-4">Сдается для</dt>
+                                      <dd class="col-8">{{ offer.get_lodger_desired_sex_display }}</dd>
+                                      <dt class="col-4">Сейчас живут</dt>
+                                      <dd class="col-8">{{ offer.get_sex_of_living_lodgers_display }}</dd>
+                                       <dt class="col-4">Район</dt>
+                                      <dd class="col-8">{{ offer.district }}</dd>
+                                   </dl>
+                               </div>
+                               <div class="col">
+                                   <dl class="row">
+                                      <dt class="col"></dt>
+                                      <dd class="col"></dd>
+                                       <dt class="col"></dt>
+                                      <dd class="col"></dd>
+                                   </dl>
+                               </div>
+                            </div>
+                        </p>
+                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+
+                  </div>
+                </div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+   </div><!--start//-->
+</div><!--row//-->
+<!-- ========================= QUERYSET END// ========================= -->
 </section>
 <!-- ========================= SECTION  END// ========================= -->
 
