@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Account
+from django.shortcuts import reverse
 
 
 class Countries(models.Model):
@@ -91,7 +92,7 @@ class Offer(models.Model):
     district = models.CharField(max_length=50, null=True, blank=True)
     house_type = models.CharField(max_length=2, choices=HOUSE_TYPES)
     number_of_rooms = models.CharField(max_length=2, choices=ROOMS)
-    house_area = models.FloatField(max_length=7, default=0) # TODO: delete default before deployment
+    house_area = models.FloatField(max_length=7, default=0)  # TODO: delete default before deployment
     interior_condition = models.CharField(max_length=2, choices=INTERIOR)
     furniture = models.CharField(max_length=2, choices=FURNITURE)
     appliances = models.CharField(max_length=2, choices=APPLIANCES)
@@ -107,6 +108,7 @@ class Offer(models.Model):
     has_balcony = models.BooleanField()
     has_loggia = models.BooleanField()
     has_parking = models.BooleanField()
+    transport_nearby = models.BooleanField(default=False)  # TODO: delete default before deployment
     with_animals = models.BooleanField()
     can_smoke = models.BooleanField()
     contacts = models.CharField(max_length=128)
@@ -122,5 +124,8 @@ class Offer(models.Model):
 
     def __str__(self):
         return str(self.name)
+
+    def get_url(self):
+        return reverse('housing_details', args=[self.pk])
 
 

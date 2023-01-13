@@ -81,7 +81,7 @@
 <!--with_kids//-->
    <hr>
 <!--house_type-->
-       <label class="form-check-label" for="">Тип жилья</label>
+       <label class="form-check-label" for="">Тип жилья | Housing type</label>
          <div class="form-check">
               <input name="house_type_1" class="form-check-input" type="checkbox" id="typeCheckbox1" value='1'>
               <label class="form-check-label" for="typeCheckbox1">Квартира</label>
@@ -238,31 +238,27 @@
                   <img src="{{ offer.photo_1 }}" class="img-fluid rounded-start" alt="photo">
                 </div>
                 <div class="col-md-9">
-                  <div class="card-body">
-                        <h5 class="card-title">{{ offer.name }}</h5>
+                  <div class="card-body small">
+                        <a class="" href="{{ offer.get_url }}"><h5 class="card-title">{{ offer.name }},  {{ offer.district }}</h5></a>
                         <p class="card-text">
                             <div class="row">
                                <div class="col">
                                    <dl class="row">
-                                      <dt class="col-4">Сдается для</dt>
+                                       <dt class="col-4">Помещение/Housing</dt>
+                                      <dd class="col-8">{{ offer.get_house_type_display }}; комнаты/rooms: {{ offer.get_number_of_rooms_display }}; площадь/area {{ offer.house_area }} m2</dd>
+                                      <dt class="col-4">Сдается для/For rent for</dt>
                                       <dd class="col-8">{{ offer.get_lodger_desired_sex_display }}</dd>
-                                      <dt class="col-4">Сейчас живут</dt>
-                                      <dd class="col-8">{{ offer.get_sex_of_living_lodgers_display }}</dd>
-                                       <dt class="col-4">Район</dt>
-                                      <dd class="col-8">{{ offer.district }}</dd>
-                                   </dl>
-                               </div>
-                               <div class="col">
-                                   <dl class="row">
-                                      <dt class="col"></dt>
-                                      <dd class="col"></dd>
-                                       <dt class="col"></dt>
-                                      <dd class="col"></dd>
+                                      <dt class="col-4">Сейчас живут/Currently living lodgers</dt>
+                                      <dd class="col-8">{{ offer.get_sex_of_living_lodgers_display}}</dd>
+                                       <dt class="col-4">Стоимость аренды на человека/ Rental amount per person</dt>
+                                      <dd class="col-8">{{ offer.cost_per_person }}$/month | месяц</dd>
+                                       <dt class="col-4">Свободно мест</dt>
+                                       <dd class="col-8">{{ offer.free_space_for_num_person }}</dd>
                                    </dl>
                                </div>
                             </div>
                         </p>
-                        <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <p class="card-text"><small class="text-muted">Создано | Created at {{ offer.created_date }}</small></p>
 
                   </div>
                 </div>

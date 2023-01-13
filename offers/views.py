@@ -1,5 +1,19 @@
 from django.shortcuts import render
+from django.views.generic import DetailView, CreateView
+
 from .models import Offer, Countries, City
+
+
+class HouseOfferDetailView(DetailView):
+    model = Offer
+    template_name = 'offers/house_offer_detail.html'
+    context_object_name = 'housing_offer'
+
+
+class HouseOfferCreateView(CreateView):
+    model = Offer
+    template_name = 'offers/house_offer_create.html'
+    fields = '__all__'
 
 CITY_SELECTED = []
 COUNTRY_SELECTED = []
@@ -128,3 +142,5 @@ def offers(request):
     }
 
     return render(request, 'offers/house_offers.html', context=context)
+
+

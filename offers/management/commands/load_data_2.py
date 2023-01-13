@@ -62,12 +62,12 @@ APPLIANCES = [
          'Необходимое и дополнительно | Necessary+'
     ]
 
-photos = ['/home/certo/coliving/data/Pict/1.jpg',
-          '/home/certo/coliving/data/Pict/2.jpg',
-          '/home/certo/coliving/data/Pict/5fccbca8e1468b36c84fc0b39caf219f.jpg',
-          '/home/certo/coliving/data/Pict/sk_mv.ru_project_Kirpolie_HOME.jpg',
-          '/home/certo/coliving/data/Pict/Без названия.jfif',
-          '/home/certo/coliving/data/Pict/Без названия (1).jfif',
+photos = ['/media/photos/house_offers/1.jpg',
+          '/media/photos/house_offers/2.jpg',
+          '/media/photos/house_offers/5fccbca8e1468b36c84fc0b39caf219f.jpg',
+          '/media/photos/house_offers/sk_mv.ru_project_Kirpolie_HOME.jpg',
+          '/media/photos/house_offers/Без названия.jfif',
+          '/media/photos/house_offers/Без названия (1).jfif',
           ]
 class Command(BaseCommand):
 
@@ -98,11 +98,15 @@ class Command(BaseCommand):
             offer.has_balcony = choice(ch)
             offer.has_loggia = choice(ch)
             offer.has_parking = choice(ch)
+            offer.transport_nearby = choice(ch)
             offer.with_animals = choice(ch)
             offer.can_smoke = choice(ch)
             offer.contacts = "skdfdsfvkjdnvkjdfvsdf"
             offer.description = 'djfnsclksdjveruhvjnkdbvlkzxckvjb'
             offer.photo_1 = choice(photos)
+            offer.photo_2 = choice(photos)
+            offer.photo_3 = choice(photos)
+            offer.photo_4 = choice(photos)
             offer.save()
 
         print('finished')
