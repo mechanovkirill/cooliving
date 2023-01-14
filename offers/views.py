@@ -1,7 +1,7 @@
+from collections import defaultdict
 from django.views.generic import DetailView, CreateView, ListView
 from .models import Offer, Countries, City
-from django import template
-from django.core.paginator import Paginator
+
 
 class HousingOfferDetailView(DetailView):
     model = Offer
@@ -20,8 +20,9 @@ class HousingOfferListView(ListView):
     model = Offer
     template_name = 'offers/housing_offer_list.html'
 
-    CITY_SELECTED = []
-    COUNTRY_SELECTED = []
+    CITY_SELECTED = {}
+    COUNTRY_SELECTED = {}
+    QUERY_PARAMS_DICT = {}
 
     @staticmethod
     def is_valid_queryparam(param):
@@ -38,7 +39,7 @@ class HousingOfferListView(ListView):
     def get_queryset(self):
         qs = super().get_queryset()
         if self.CITY_SELECTED:
-            qs = Offer.objects.filter(is_active=True).filter(city__city=self.CITY_SELECTED[0])
+            qs = Offer.objects.filter(is_active=True).filter(city__city=self.CITY_SELECTED.get('city'))
 
         gender_of_living = self.request.GET.get('gender_of_living')
         house_type = self.listing_queryparams(self.request, 'house_type')
@@ -58,10 +59,20 @@ class HousingOfferListView(ListView):
         discard_filters = self.request.GET.get('discard_filters')
 
         if self.is_valid_queryparam(sex):
-            qs = qs.filter(lodger_desired_sex=sex)
+            self.QUERY_PARAMS_DICT['пол|gender'] = sex
+            qs = qs.filter(lodger_desired_sex=self.QUERY_PARAMS_DICT.get('пол|gender'))
+        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('пол|gender')):
+            qs = qs.filter(lodger_desired_sex=self.QUERY_PARAMS_DICT.get('пол|gender'))
+            print(self.QUERY_PARAMS_DICT.get('пол|gender'))
+        else:
+            pass
 
-        if self.is_valid_queryparam(gender_of_living):
-            qs = qs.filter(sex_of_living_lodgers=gender_of_living)
+        # if self.is_valid_queryparam(gender_of_living):
+        #     self.QUERY_PARAMS_DICT['gender_of_living'] = [gender_of_living, 'проживают|current lodgers gender']
+        #     qs = qs.filter(sex_of_living_lodgers=self.QUERY_PARAMS_DICT.get('gender_of_living')[0])
+        # else:
+        #     if self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('gender_of_living')[0]):
+        #         qs = qs.filter(lodger_desired_sex=self.QUERY_PARAMS_DICT.get('gender_of_living')[0])
 
         if self.is_valid_queryparam(with_kids):
             qs = qs.filter(with_kids=with_kids)
@@ -103,7 +114,9 @@ class HousingOfferListView(ListView):
             qs = qs.filter(with_animals=with_animals)
 
         if self.is_valid_queryparam(discard_filters):
-            qs = Offer.objects.filter(is_active=True).filter(city__city=self.CITY_SELECTED[0])
+            self.QUERY_PARAMS_DICT.clear()
+            qs = Offer.objects.filter(is_active=True).filter(city__city=self.CITY_SELECTED.get('city'))
+        print(self.QUERY_PARAMS_DICT)
 
         return qs
 
@@ -118,20 +131,22 @@ class HousingOfferListView(ListView):
         countries = Countries.objects.all()
 
         if self.is_valid_queryparam(country):
-            city_qs = City.objects.all().filter(country__country=country)
+            city_qs = City.objects.filter(country__country=country)
             placeholder_country = f'Выбранная страна | Selected country   {country}'
             placeholder_city = 'Теперь выберите город | Now select a city'
             self.COUNTRY_SELECTED.clear()
-            self.COUNTRY_SELECTED.append(country)
+            self.COUNTRY_SELECTED['country'] = country
 
         if self.is_valid_queryparam(city):
             self.CITY_SELECTED.clear()
-            self.CITY_SELECTED.append(city)
+            self.CITY_SELECTED['city'] = city
 
         if self.COUNTRY_SELECTED and self.CITY_SELECTED:
-            placeholder_country = f'Выбрана страна | Selected country {self.COUNTRY_SELECTED[0]}'
-            placeholder_city = f'Выбран город | Selected city {self.CITY_SELECTED[0]}'
-            already_hint = ''
+            placeholder_country = f'Выбрана страна | Selected country {self.COUNTRY_SELECTED.get("country")}'
+            placeholder_city = f'Выбран город | Selected city {self.CITY_SELECTED.get("city")}'
+
+        if self.QUERY_PARAMS_DICT:
+            already_hint = f'Выбраны фильтры | filters selected'
 
         # 'page_obj' = page_obj
         context['countries'] = countries
