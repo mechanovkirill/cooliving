@@ -219,13 +219,14 @@
         </div>
 <!-- ========================= FILTERS END// ========================= -->
     <!--============== SELECTED =================-->
-    {% if already_hint %}
-        <div class="card border-0">
-            <div class="card-body">
-                 <h6>{{ already_hint }}</h6>
-            </div>
-        </div>
-    {% else %}
+    {% if offers_count %}
+      <strong><p>Найдено предложений {{ offers_count }} | {{ offers_count }} offers found</p></strong>
+     {% else %}
+        <p>Ничего не найдено, проверьте выбрана ли страна и город, измените или сбросьте фильтры</p>
+        <p>Nothing found, check if country and city are selected, change or reset filters</p>
+    {% endif %}
+    {% if filters_selected %}
+        <p><strong>Выбраны фильтры | filters selected:  </strong>{{ filters_selected }}</p>
     {% endif %}
 <!--============== SELECTED //=================-->
 <!-- ========================= QUERYSET DISPLAY ========================= -->
