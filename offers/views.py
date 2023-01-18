@@ -1,9 +1,8 @@
-from collections import defaultdict
-
+from django.urls import reverse
 from django.core.paginator import Paginator
-from django.db.models import Q
-from django.views.generic import DetailView, CreateView, TemplateView
+from django.views.generic import DetailView, CreateView, TemplateView, UpdateView
 from .models import Offer, Countries, City
+from .forms import OfferForm
 
 
 class HousingOfferDetailView(DetailView):
@@ -12,10 +11,47 @@ class HousingOfferDetailView(DetailView):
     context_object_name = 'housing_offer'
 
 
-class HousingOfferCreateView(CreateView):
+class OfferCreateView(CreateView):
     model = Offer
-    template_name = 'offers/house_offer_create.html'
-    fields = '__all__'
+    form_class = OfferForm
+    template_name = 'offers/offer_form.html'
+
+    def get_context_data(self, **kwargs):
+        placeholder_country = 'Выберите страну | Choose country'
+        context = super().get_context_data(**kwargs)
+        countries = Countries.objects.all()
+        cities = ''
+        country = self.request.GET.get('country_select')
+        if country != '' and not None:
+            cities = City.objects.filter(country__country=country)
+            placeholder_country = country
+
+        context['countries'] = countries
+        context['cities'] = cities
+        context['placeholder_country'] = placeholder_country
+
+        return context
+
+    def form_valid(self, form):
+        form.instance.user = self.request.user
+        form.instance.city = self.request.POST.get('city_select')
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse('offer_detail', args=[str(self.object.id)])
+
+
+# class OfferUpdateView(UpdateView):
+#     model = Offer
+#     form_class = OfferForm
+#     template_name = 'offers/offer_form.html'
+#
+#     def form_valid(self, form):
+#         form.instance.user = self.request.user
+#         return super().form_valid(form)
+#
+#     def get_success_url(self):
+#         return reverse('offer_detail', args=[str(self.object.id)])
 
 
 class HousingOfferListView(TemplateView):
@@ -39,22 +75,6 @@ class HousingOfferListView(TemplateView):
 
     def get_queryset(self):
         qs = Offer.objects.filter(is_active=True).filter(city__city=self.CITY_SELECTED.get('city'))
-        gender_of_living = self.request.GET.get('gender_of_living')
-        house_type = self.listing_queryparams(self.request, 'house_type')
-        sex = self.request.GET.get('sex')
-        # number_of_rooms = self.listing_queryparams(self.request, 'n_rooms')
-        interior_condition = self.request.GET.get('interior_condition')
-        furniture = self.request.GET.get('furniture')
-        heating = self.request.GET.get('heating')
-        internet_options = self.listing_queryparams(self.request, 'internet_op')
-        number_of_living = self.request.GET.get('number_living')
-        free_space = self.request.GET.get('freespace')
-        min_cost = self.request.GET.get('min_cost')
-        max_cost = self.request.GET.get('max_cost')
-        min_rental_period = self.request.GET.get('min_rental_period')
-        with_kids = self.request.GET.get('with_kids')
-        with_animals = self.request.GET.get('with_animals')
-        discard_filters = self.request.GET.get('discard_filters')
 
         if self.is_valid_queryparam(self.request.GET.get('sex')):
             self.QUERY_PARAMS_DICT['Пол|gender'] = self.request.GET.get('sex')
@@ -124,23 +144,29 @@ class HousingOfferListView(TemplateView):
 
         if self.is_valid_queryparam(self.request.GET.get('min_cost')):
             self.QUERY_PARAMS_DICT['Минимальная цена|min. price'] = self.request.GET.get('min_cost')
-            qs = qs.filter(cost_per_person__gte=self.QUERY_PARAMS_DICT.get('Свободно мест|free space'))
+            qs = qs.filter(cost_per_person__gte=self.QUERY_PARAMS_DICT.get('Минимальная цена|min. price'))
+        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Минимальная цена|min. price')):
+            qs = qs.filter(cost_per_person__gte=self.QUERY_PARAMS_DICT.get('Минимальная цена|min. price'))
+
+        if self.is_valid_queryparam(self.request.GET.get('max_cost')):
+            self.QUERY_PARAMS_DICT['Минимальная цена|min. price'] = self.request.GET.get('max_cost')
+            qs = qs.filter(cost_per_person__lte=self.QUERY_PARAMS_DICT.get('Свободно мест|free space'))
         elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Свободно мест|free space')):
-            qs = qs.filter(cost_per_person__gte=self.QUERY_PARAMS_DICT.get('Свободно мест|free space'))
+            qs = qs.filter(cost_per_person__lte=self.QUERY_PARAMS_DICT.get('Свободно мест|free space'))
 
-        if self.is_valid_queryparam(min_cost):
-            qs = qs.filter(cost_per_person__gte=min_cost)
+        if self.is_valid_queryparam(self.request.GET.get('min_rental_period')):
+            self.QUERY_PARAMS_DICT['Период аренды|rental period'] = self.request.GET.get('min_rental_period')
+            qs = qs.filter(min_rental_period__lte=self.QUERY_PARAMS_DICT.get('Период аренды|rental period'))
+        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Период аренды|rental period')):
+            qs = qs.filter(min_rental_period__lte=self.QUERY_PARAMS_DICT.get('Период аренды|rental period'))
 
-        if self.is_valid_queryparam(max_cost):
-            qs = qs.filter(cost_per_person__lte=max_cost)
+        if self.is_valid_queryparam(self.request.GET.get('with_animals')):
+            self.QUERY_PARAMS_DICT['С животными|with animals'] = self.request.GET.get('with_animals')
+            qs = qs.filter(with_animals=self.QUERY_PARAMS_DICT.get('С животными|with animals'))
+        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('С животными|with animals')):
+            qs = qs.filter(with_animals=self.QUERY_PARAMS_DICT.get('С животными|with animals'))
 
-        if self.is_valid_queryparam(min_rental_period):
-            qs = qs.filter(min_rental_period__lte=min_rental_period)
-
-        if self.is_valid_queryparam(with_animals):
-            qs = qs.filter(with_animals=with_animals)
-
-        if self.is_valid_queryparam(discard_filters):
+        if self.is_valid_queryparam(self.request.GET.get('discard_filters')):
             self.QUERY_PARAMS_DICT.clear()
             qs = Offer.objects.filter(is_active=True).filter(city__city=self.CITY_SELECTED.get('city'))
 

@@ -1,5 +1,4 @@
-Ecommerce/Ecommerce/secrets/secret_settings.py
-**/secrets
+draft.py
 **/media
 **/Pict
 # Created by https://www.toptal.com/developers/gitignore/api/django

@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+
+<!-- ========================= SECTION MAIN ========================= -->
+<section class="section-intro py-2">
+<div class="container">
+{% include 'includes/alerts.html' %}
+<div class="intro-banner-wrap">
+{#	<img src="{% static 'images/banners/fon_kapli_svet_krugi_siniy_83428_1920x1080c.jpg' %}" class="img-fluid rounded">#}
+</div>
+
+</div> <!-- container //  -->
+</section>
+<!-- ========================= SECTION MAIN END// ========================= -->
+
+<!-- ========================= SECTION  ========================= -->
+<section class="section-name padding-y-sm">
+<div class="card mx-auto" style="max-width: 600px">
+    <div class="card-title">
+        <div class="card-header bg-success text-white">СОЗДАНИЕ ПРЕДЛОЖЕНИЯ ЖИЛЬЯ <br>CREATING A HOUSING OFFER</div>
+    </div>
+    <div class="card-body">
+        <!-- country sel -->
+          <div class="row">
+                <form method="get" name="country_sel" action="">
+                <label for="CountryDataList">Страна | Country</label>
+                    <input name="country_select" type="search" class="form-control mb-3" list="CountrydatalistOptions" id="CountryDataList" placeholder="{{ placeholder_country }}" onchange='if(this.value != 0) { this.form.submit(); }'>
+                    <datalist id="CountrydatalistOptions">
+                        {% for country in countries %}
+                          <option value="{{ country.country }}">
+                        {% endfor %}
+                    </datalist>
+                </form>
+          </div>
+        <!-- country sel// -->
+    <form method="POST" class="form-group">
+        {% csrf_token %}
+         <label for="CityDataList">Город | City</label>
+         <input name="city_select" type="search" class="form-control mb-3" list="CitydatalistOptions1" id="CityDataList" placeholder="Выберите город | Choose city" required>
+            <datalist id="CitydatalistOptions1">
+                {% for city in cities %}
+                  <option value="{{ city.city }}">
+                {% endfor %}
+            </datalist>
+
+        {{ form.as_p }}
+
+        <input class="btn btn-outline-success float-start" type="submit" value="Создать | Create">
+    </form>
+    </div>
+</div>
+</section>
+
+<!-- ========================= SECTION  END// ========================= -->
+
+{% endblock %}
+
