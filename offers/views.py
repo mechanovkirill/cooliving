@@ -33,12 +33,13 @@ class OfferCreateView(CreateView):
         return context
 
     def form_valid(self, form):
+        city = City.objects.get(city=self.request.POST.get('city_select'))
         form.instance.user = self.request.user
-        form.instance.city = self.request.POST.get('city_select')
+        form.instance.city = city
         return super().form_valid(form)
 
     def get_success_url(self):
-        return reverse('offer_detail', args=[str(self.object.id)])
+        return reverse('housing_details', args=[str(self.object.id)])
 
 
 # class OfferUpdateView(UpdateView):
@@ -51,7 +52,7 @@ class OfferCreateView(CreateView):
 #         return super().form_valid(form)
 #
 #     def get_success_url(self):
-#         return reverse('offer_detail', args=[str(self.object.id)])
+#         return reverse('housing_details', args=[str(self.object.id)])
 
 
 class HousingOfferListView(TemplateView):
@@ -78,15 +79,15 @@ class HousingOfferListView(TemplateView):
 
         if self.is_valid_queryparam(self.request.GET.get('sex')):
             self.QUERY_PARAMS_DICT['Пол|gender'] = self.request.GET.get('sex')
-            qs = qs.filter(lodger_desired_sex=self.QUERY_PARAMS_DICT.get('Пол|gender'))
+            qs = qs.filter(desired_lodgers_gender=self.QUERY_PARAMS_DICT.get('Пол|gender'))
         elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Пол|gender')):
-            qs = qs.filter(lodger_desired_sex=self.QUERY_PARAMS_DICT.get('Пол|gender'))
+            qs = qs.filter(desired_lodgers_gender=self.QUERY_PARAMS_DICT.get('Пол|gender'))
 
         if self.is_valid_queryparam(self.request.GET.get('gender_of_living')):
             self.QUERY_PARAMS_DICT['Проживают|people living'] = self.request.GET.get('gender_of_living')
-            qs = qs.filter(sex_of_living_lodgers=self.QUERY_PARAMS_DICT.get('Проживают|people living'))
+            qs = qs.filter(sex_of_now_lodgers=self.QUERY_PARAMS_DICT.get('Проживают|people living'))
         elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Проживают|people living')):
-            qs = qs.filter(sex_of_living_lodgers=self.QUERY_PARAMS_DICT.get('Проживают|people living'))
+            qs = qs.filter(sex_of_now_lodgers=self.QUERY_PARAMS_DICT.get('Проживают|people living'))
 
         if self.is_valid_queryparam(self.request.GET.get('with_kids')):
             self.QUERY_PARAMS_DICT['С детьми|with kids'] = self.request.GET.get('with_kids')

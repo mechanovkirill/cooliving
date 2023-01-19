@@ -236,7 +236,12 @@
             <div class="card col-9 border-0">
               <div class="row g-0">
                 <div class="col-md-3">
-                  <a href="{{ offer.get_url }}"><img src="{{ offer.photo_1 }}" class="img-fluid rounded-start" alt="photo"></a>
+
+                 {% if offer.photo_1.url is not None %}
+                   <a href="{{ offer.get_url }}"><img src="{{ offer.photo_1.url }}" class="img-fluid rounded-start" alt="photo"></a>
+                {% else %}
+                        <a href="{{ offer.get_url }}"><img src='/static/images/Desktop - 1.png' class="img-fluid rounded-start" alt="photo"></a>
+                {% endif %}
                 </div>
                 <div class="col-md-9">
                   <div class="card-body small">

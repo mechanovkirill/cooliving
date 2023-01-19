@@ -4,7 +4,7 @@ from .models import Offer, City, Countries
 
 class OfferAdmin(admin.ModelAdmin):
     list_display = (
-        'name', 'city', 'lodger_desired_sex', 'sex_of_living_lodgers', 'house_type',
+        'name', 'city', 'desired_lodgers_gender', 'sex_of_now_lodgers', 'house_type',
         'number_of_rooms', 'interior_condition', 'heating', 'number_of_lodgers', 'internet',
         'furniture', 'appliances', 'created_date', 'modified_date', 'free_space_for_num_person', 'total_cost',
         'cost_per_person', 'min_rental_period', 'with_animals', 'with_kids', 'separate_room', 'has_balcony',

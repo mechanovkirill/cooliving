@@ -6,16 +6,26 @@
 <!-- ========================= Gallery ========================= -->
         <div class="col-md-5">
            <div class="card border-0 mb-1" style="">
-                   <img src="{{ housing_offer.photo_1 }}" onerror="this.src ='/static/images/Desktop - 1.png'" alt="photo" style="border-radius: 1%">
+               {% if housing_offer.photo_1.url is not None %}
+                   <img src="{{ housing_offer.photo_1.url }}" alt="photo" style="border-radius: 1%">
+                {% else %}
+                    <img src='/static/images/Desktop - 1.png' alt="photo" style="border-radius: 1%">
+                {% endif %}
            </div>
             <div class="card border-0 mb-1">
-                   <img src="{{ housing_offer.photo_2 }}" onerror="this.src ='/static/images/Desktop - 1.png'" alt="photo" style="border-radius: 1%">
+                  {% if housing_offer.photo_2.url is not None %}
+                       <img src="{{ housing_offer.photo_2.url }}" alt="photo" style="border-radius: 1%">
+                   {% endif %}
            </div>
             <div class="card border-0 mb-1">
-                   <img src="{{ housing_offer.photo_3 }}" onerror="this.src ='/static/images/Desktop - 1.png'" alt="photo" style="border-radius: 1%">
+                    {% if housing_offer.photo_3.url is not None %}
+                       <img src="{{ housing_offer.photo_3.url }}" alt="photo" style="border-radius: 1%">
+                   {% endif %}
            </div>
             <div class="card border-0 mb-1">
-                   <img src="{{ housing_offer.photo_4 }}" onerror="this.src ='/static/images/Desktop - 1.png'" alt="photo" style="border-radius: 1%">
+               {% if housing_offer.photo_4.url is not None %}
+                       <img src="{{ housing_offer.photo_4.url }}" alt="photo" style="border-radius: 1%">
+                   {% endif %}
            </div>
         </div><!--col//-->
 <!-- ========================= Gallery// ========================= -->

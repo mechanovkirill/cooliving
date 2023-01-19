@@ -35,7 +35,7 @@
                 </form>
           </div>
         <!-- country sel// -->
-    <form method="POST" class="form-group">
+    <form method="POST" class="form-group" enctype='multipart/form-data'>
         {% csrf_token %}
          <label for="CityDataList">Город | City</label>
          <input name="city_select" type="search" class="form-control mb-3" list="CitydatalistOptions1" id="CityDataList" placeholder="Выберите город | Choose city" required>
