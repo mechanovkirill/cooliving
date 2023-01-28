@@ -1,10 +1,24 @@
 from django import forms
+from django.forms.renderers import TemplatesSetting
 from django.forms.utils import ErrorList
 from .models import Offer
 from django.utils.translation import gettext_lazy as _
 
 
+class CustomErrorList(ErrorList):
+    def __init__(self, initlist=None, error_class=None, renderer=None):
+        super().__init__(initlist, error_class="list-group", renderer=TemplatesSetting())
+
+    template_name = "forms/errors/default.html"
+    template_name_text = "forms/text.txt"
+    template_name_ul = "forms/errors/ul.html"
+
+
 class OfferForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.error_class = CustomErrorList
+
     class Meta:
         model = Offer
         exclude = ['city', 'user', 'is_active', 'count_of_views', 'in_favorites']
