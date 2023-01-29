@@ -30,103 +30,104 @@
         </div><!--col//-->
 <!-- ========================= Gallery// ========================= -->
 <!-- ========================= Describes ========================= -->
-        <div class="col">
+        <div class="col-md-7">
              <p class="card-text">
                             <div class="row">
                                <div class="col">
+                                  <H6 class="header-main"><b>{{ housing_offer.name }}</b></H6>
                                    <dl class="row">
-                                          <dt class="col-4">Описание | Description</dt>
-                                          <dd class="col-8">{{ housing_offer.description }}</dd>
-                                          <dt class="col-4">Контакты для связи</dt>
-                                          <dd class="col-8">{{ housing_offer.contacts }}</dd>
-                                          <dt class="col-4">Город | City</dt>
-                                          <dd class="col-8">{{ housing_offer.city }}</dd>
-                                          <dt class="col-4">Район</dt>
-                                          <dd class="col-8">{{ housing_offer.district }}</dd>
-                                          <dt class="col-4">Сдается для</dt>
-                                          <dd class="col-8">{{ housing_offer.get_lodger_desired_sex_display }}</dd>
-                                          <dt class="col-4">Сейчас проживают</dt>
-                                          <dd class="col-8">{{ housing_offer.get_sex_of_living_lodgers_display }}</dd>
-                                           <dt class="col-4">Можно с детьми</dt>
+                                          <dt class="col-5 mb-2">Описание | Description</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.description }}</dd>
+                                          <dt class="col-5 mb-2">Контакты для связи | Contacts for feedback</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.contacts }}</dd>
+                                          <dt class="col-5 mb-2">Город | City</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.city }}</dd>
+                                          <dt class="col-5 mb-2">Район | District</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.district }}</dd>
+                                          <dt class="col-5 mb-2">Сдается для | Gender of potential tenants</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_desired_lodgers_gender_display }}</dd>
+                                          <dt class="col-5 mb-2">Сейчас проживают | Gender of current tenants</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_sex_of_now_lodgers_display }}</dd>
+                                           <dt class="col-5 mb-2">Можно с детьми | Children allowed</dt>
                                                {% if housing_offer.with_kids %}
-                                                   <dd class="col-8"><i class="fa fa-check" aria-hidden="true"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-check" aria-hidden="true"></i></dd>
                                                {% else %}
-                                                   <dd class="col-8"><i class="fa fa-close"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-close"></i></dd>
                                                {% endif %}
-                                           <dt class="col-4">Тип жилья</dt>
-                                          <dd class="col-8">{{ housing_offer.get_house_type_display }}</dd>
-                                           <dt class="col-4">Количество комнат</dt>
-                                          <dd class="col-8">{{ housing_offer.get_number_of_rooms_display }}</dd>
-                                           <dt class="col-4">Площадь жилья</dt>
-                                          <dd class="col-8">{{ housing_offer.house_area }} m2</dd>
-                                           <dt class="col-4">Предлагается отдельная комната</dt>
+                                           <dt class="col-5 mb-2">Тип жилья | Housing type</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_house_type_display }}</dd>
+                                           <dt class="col-5 mb-2">Количество комнат | Number of rooms</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_number_of_rooms_display }}</dd>
+                                           <dt class="col-5 mb-2">Площадь жилья | Area</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.house_area }} m2</dd>
+                                           <dt class="col-5 mb-2">Предлагается отдельная комната | Separate room</dt>
                                               {% if housing_offer.separate_room %}
-                                                   <dd class="col-8"><i class="fa fa-check" aria-hidden="true"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-check" aria-hidden="true"></i></dd>
                                                {% else %}
-                                                   <dd class="col-8"><i class="fa fa-close"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-close"></i></dd>
                                                {% endif %}
-                                           <dt class="col-4">Состояние отделки</dt>
-                                          <dd class="col-8">{{ housing_offer.get_interior_condition_display }}</dd>
-                                           <dt class="col-4">Наличие мебели</dt>
-                                          <dd class="col-8">{{ housing_offer.get_furniture_display }}</dd>
-                                           <dt class="col-4">Наличие бытовой техники</dt>
-                                          <dd class="col-8">{{ housing_offer.get_appliances_display }}</dd>
-                                           <dt class="col-4">Отопление</dt>
-                                          <dd class="col-8">{{ housing_offer.get_heating_display }}</dd>
-                                           <dt class="col-4">Интернет</dt>
-                                          <dd class="col-8">{{ housing_offer.get_internet_display }}</dd>
-                                           <dt class="col-4">Количество людей которые могут проживать </dt>
-                                          <dd class="col-8">{{ housing_offer.number_of_lodgers }}</dd>
-                                           <dt class="col-4">Свободно мест</dt>
-                                          <dd class="col-8">{{ housing_offer.free_space_for_num_person }}</dd>
-                                           <dt class="col-4">Полная стоимость аренды в USD </dt>
-                                          <dd class="col-8">{{ housing_offer.total_cost }}$</dd>
-                                           <dt class="col-4">Стоимость на одного человека в USD</dt>
-                                          <dd class="col-8">{{ housing_offer.cost_per_person }}$</dd>
-                                           <dt class="col-4">Средняя стоимость коммунальных услуг в месяц</dt>
-                                          <dd class="col-8">{{ housing_offer.аverage_utility_bill }}$</dd>
-                                           <dt class="col-4">Минимальный период аренды </dt>
-                                          <dd class="col-8">{{ housing_offer.min_rental_period }} мес/month</dd>
-                                           <dt class="col-4">Есть балкон</dt>
+                                           <dt class="col-5 mb-2">Состояние отделки | Interior condition</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_interior_condition_display }}</dd>
+                                           <dt class="col-5 mb-2">Наличие мебели | Availability of furniture</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_furniture_display }}</dd>
+                                           <dt class="col-5 mb-2">Наличие бытовой техники | Availability of appliances</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_appliances_display }}</dd>
+                                           <dt class="col-5 mb-2">Отопление | Heating</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_heating_display }}</dd>
+                                           <dt class="col-5 mb-2">Интернет | Internet</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.get_internet_display }}</dd>
+                                           <dt class="col-5 mb-2">Жилье вмещает жильцов | Maximum number of lodgers</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.number_of_lodgers }}</dd>
+                                           <dt class="col-5 mb-2">Свободно мест | Free space for lodgers</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.free_space_for_num_person }}</dd>
+                                           <dt class="col-5 mb-2">Полная стоимость аренды помещения | Total rental amount</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.total_cost }}$ в месяц | per month</dd>
+                                           <dt class="col-5 mb-2">Сумма аренды на человека | Rental amount per person</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.cost_per_person }}$ в месяц | per month</dd>
+                                           <dt class="col-5 mb-2">Средняя стоимость коммунальных услуг | Average cost of utilities</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.average_utility_bill }}$ в месяц | per month</dd>
+                                           <dt class="col-5 mb-2">Минимальный период аренды | Minimal rental period</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.min_rental_period }} мес | month</dd>
+                                           <dt class="col-5 mb-2">Есть балкон | Has balcony</dt>
                                                {% if housing_offer.has_balcony %}
-                                                   <dd class="col-8"><i class="fa fa-check" aria-hidden="true"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-check" aria-hidden="true"></i></dd>
                                                {% else %}
-                                                   <dd class="col-8"><i class="fa fa-close"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-close"></i></dd>
                                                {% endif %}
-                                          <dt class="col-4">Есть лоджия </dt>
+                                          <dt class="col-5 mb-2">Есть лоджия | Has loggia</dt>
                                               {% if housing_offer.has_loggia %}
-                                                   <dd class="col-8"><i class="fa fa-check" aria-hidden="true"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-check" aria-hidden="true"></i></dd>
                                                {% else %}
-                                                   <dd class="col-8"><i class="fa fa-close"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-close"></i></dd>
                                                {% endif %}
-                                           <dt class="col-4">Есть парковка </dt>
+                                           <dt class="col-5 mb-2">Есть парковка | Has parking</dt>
                                                {% if housing_offer.has_parking %}
-                                                   <dd class="col-8"><i class="fa fa-check" aria-hidden="true"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-check" aria-hidden="true"></i></dd>
                                                {% else %}
-                                                   <dd class="col-8"><i class="fa fa-close"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-close"></i></dd>
                                                {% endif %}
-                                           <dt class="col-4">Общественный транспорт рядом | Public transport nearby</dt>
+                                           <dt class="col-5 mb-2">Общественный транспорт рядом | Public transport nearby</dt>
                                                {% if housing_offer.transport_nearby %}
-                                                   <dd class="col-8"><i class="fa fa-check" aria-hidden="true"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-check" aria-hidden="true"></i></dd>
                                                {% else %}
-                                                   <dd class="col-8"><i class="fa fa-close"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-close"></i></dd>
                                                {% endif %}
-                                           <dt class="col-4">Можно с животными | Animals allowed</dt>
+                                           <dt class="col-5 mb-2">Можно с животными | Animals allowed</dt>
                                                {% if housing_offer.with_animals %}
-                                                   <dd class="col-8"><i class="fa fa-check" aria-hidden="true"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-check" aria-hidden="true"></i></dd>
                                                {% else %}
-                                                   <dd class="col-8"><i class="fa fa-close"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-close"></i></dd>
                                                {% endif %}
-                                           <dt class="col-4">Можно курить | Smoking allowed</dt>
+                                           <dt class="col-5 mb-2">Можно курить | Smoking allowed</dt>
                                                {% if housing_offer.can_smoke %}
-                                                   <dd class="col-8"><i class="fa fa-check" aria-hidden="true"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-check" aria-hidden="true"></i></dd>
                                                {% else %}
-                                                   <dd class="col-8"><i class="fa fa-close"></i></dd>
+                                                   <dd class="col-7 mb-2"><i class="fa fa-close"></i></dd>
                                                {% endif %}
-                                           <dt class="col-4">Предложение создано</dt>
-                                          <dd class="col-8">{{ housing_offer.created_date }}</dd>
-                                           <dt class="col-4">Предложение изменено</dt>
-                                          <dd class="col-8">{{ housing_offer.modified_date }}</dd>
+                                           <dt class="col-5 mb-2">Предложение создано | Created date</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.created_date }}</dd>
+                                           <dt class="col-5 mb-2">Предложение изменено | Edited date</dt>
+                                          <dd class="col-7 mb-2">{{ housing_offer.modified_date }}</dd>
 
                                    </dl>
                                </div>

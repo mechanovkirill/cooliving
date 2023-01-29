@@ -27,7 +27,7 @@ class OfferForm(forms.ModelForm):
             'name': _('Заголовок | Title'),
             'desired_lodgers_gender': _('Сдается для | Who are you looking for?'),
             'sex_of_now_lodgers': _('Сейчас живут | Gender of current tenants'),
-            'with_kids': _('Можно с детьми | With kids'),
+            'with_kids': _('Можно с детьми | Children allowed'),
             'district': _('Район | District'),
             'house_type': _('Тип жилья | Housing type'),
             'number_of_rooms': _('Количество комнат | Number of rooms'),
@@ -39,7 +39,7 @@ class OfferForm(forms.ModelForm):
             'appliances': _('Наличие бытовой техники | Availability of appliances'),
             'number_of_lodgers': _('Жилье вмещает жильцов | Maximum number of lodgers'),
             'free_space_for_num_person': _('Свободно мест | Free space for lodgers'),
-            'total_cost': _('Общая сумма аренды | Total rental amount'),
+            'total_cost': _('Полная стоимость аренды помещения | Total rental amount'),
             'cost_per_person': _('Сумма аренды на человека | Rental amount per person'),
             'average_utility_bill': _('Средняя стоимость коммунальных услуг | Average utility bill'),
             'min_rental_period': _('Минимальный период аренды | Minimal rental period'),
@@ -57,6 +57,7 @@ class OfferForm(forms.ModelForm):
             'photo_3': _(''),
             'photo_4': _(''),
         }
+
         help_texts = {
             'name': _('<small class="text-muted">Кратко опишите предложение. Не более 100 символов. '
                       'Create useful title. No more than 100 characters.</small>'),
@@ -96,11 +97,7 @@ class OfferForm(forms.ModelForm):
                              'No more than 1000 characters.</small>'),
             'photo_4': _('<small class="text-muted"></small>'),
         }
-        error_messages = {
-            'description': {
-                'max_length': _("Больше 1000 символов. More than 1000 characters."),
-            },
-        }
+
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Type the text'}),
             'desired_lodgers_gender': forms.Select(attrs={'class': 'form-control'}),
@@ -211,10 +208,61 @@ class OfferForm(forms.ModelForm):
             )
         return district
 
-    def clean_area(self):
-        area = self.cleaned_data.get('area')
-        if area < 5:
+    def clean_house_area(self):
+        house_area = self.cleaned_data.get('house_area')
+        if house_area < 5:
             raise forms.ValidationError(
                 "Area must be at least 5 sq.m. Площадь помещения должна быть более 5 кв. метров"
             )
-        return area
+        return house_area
+
+    def clean_number_of_lodgers(self):
+        number_of_lodgers = self.cleaned_data.get('number_of_lodgers')
+        if number_of_lodgers < 1:
+            raise forms.ValidationError(
+                "Количество жильцов не может быть меньше 1. The number of tenants cannot be less than 1."
+            )
+        if number_of_lodgers > 500:
+            raise forms.ValidationError(
+                "Количество жильцов едва ли может превышать 500, возможно вы ошиблись? "
+                "The number of tenants can hardly exceed 500, perhaps you are mistaken?"
+            )
+        return number_of_lodgers
+
+    def clean_free_space_for_num_person(self):
+        free_space_for_num_person = self.cleaned_data.get('free_space_for_num_person')
+        if free_space_for_num_person < 1:
+            raise forms.ValidationError(
+                "Количество жильцов не может быть меньше 1. The number of tenants cannot be less than 1."
+            )
+        if free_space_for_num_person > 500:
+            raise forms.ValidationError(
+                "Количество жильцов едва ли может превышать 500, возможно вы ошиблись? "
+                "The number of tenants can hardly exceed 500, perhaps you are mistaken?"
+            )
+        return free_space_for_num_person
+
+    def clean_total_cost(self):
+        total_cost = self.cleaned_data.get('total_cost')
+        if total_cost < 1:
+            raise forms.ValidationError(
+                "Стоимость аренды не может быть меньше единицы. The rental price cannot be less than one."
+            )
+        return total_cost
+
+    def clean_cost_per_person(self):
+        cost_per_person = self.cleaned_data.get('cost_per_person')
+        if cost_per_person < 1:
+            raise forms.ValidationError(
+                "Стоимость аренды не может быть меньше единицы. The rental price cannot be less than one."
+            )
+        return cost_per_person
+
+    def clean_min_rental_period(self):
+        min_rental_period = self.cleaned_data.get('min_rental_period')
+        if min_rental_period < 1:
+            raise forms.ValidationError(
+                "Минимальный срок аренды не может быть меньше одного месяца. "
+                "The minimum rental period cannot be less than one month."
+            )
+        return min_rental_period
