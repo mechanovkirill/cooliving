@@ -266,3 +266,4 @@ class OfferForm(forms.ModelForm):
                 "The minimum rental period cannot be less than one month."
             )
         return min_rental_period
+

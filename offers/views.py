@@ -76,30 +76,42 @@ class HousingOfferListView(TemplateView):
 
     def get_queryset(self):
         qs = Offer.objects.filter(is_active=True).filter(city__city=self.CITY_SELECTED.get('city'))
+        gender = self.request.GET.get('sex')
+        gender_of_living = self.request.GET.get('gender_of_living')
+        district = self.request.GET.get('district')
+        with_kids = self.request.GET.get('with_kids')
 
-        if self.is_valid_queryparam(self.request.GET.get('sex')):
-            self.QUERY_PARAMS_DICT['Пол|gender'] = self.request.GET.get('sex')
-            qs = qs.filter(desired_lodgers_gender=self.QUERY_PARAMS_DICT.get('Пол|gender'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Пол|gender')):
-            qs = qs.filter(desired_lodgers_gender=self.QUERY_PARAMS_DICT.get('Пол|gender'))
+        sqpd = self.QUERY_PARAMS_DICT.get
 
-        if self.is_valid_queryparam(self.request.GET.get('gender_of_living')):
-            self.QUERY_PARAMS_DICT['Проживают|people living'] = self.request.GET.get('gender_of_living')
-            qs = qs.filter(sex_of_now_lodgers=self.QUERY_PARAMS_DICT.get('Проживают|people living'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Проживают|people living')):
-            qs = qs.filter(sex_of_now_lodgers=self.QUERY_PARAMS_DICT.get('Проживают|people living'))
+        if self.is_valid_queryparam(gender):
+            self.QUERY_PARAMS_DICT['Пол|gender'] = gender
+            qs = qs.filter(desired_lodgers_gender=sqpd('Пол|gender'))
+        elif self.is_valid_queryparam(sqpd('Пол|gender')):
+            qs = qs.filter(desired_lodgers_gender=sqpd('Пол|gender'))
 
-        if self.is_valid_queryparam(self.request.GET.get('with_kids')):
-            self.QUERY_PARAMS_DICT['С детьми|with kids'] = self.request.GET.get('with_kids')
-            qs = qs.filter(with_kids=self.QUERY_PARAMS_DICT.get('С детьми|with kids'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('С детьми|with kids')):
-            qs = qs.filter(with_kids=self.QUERY_PARAMS_DICT.get('С детьми|with kids'))
+        if self.is_valid_queryparam(gender_of_living):
+            self.QUERY_PARAMS_DICT['Проживают|people living'] = gender_of_living
+            qs = qs.filter(sex_of_now_lodgers=sqpd('Проживают|people living'))
+        elif self.is_valid_queryparam(sqpd('Проживают|people living')):
+            qs = qs.filter(sex_of_now_lodgers=sqpd('Проживают|people living'))
+
+        if self.is_valid_queryparam(with_kids):
+            self.QUERY_PARAMS_DICT['С детьми|with kids'] = with_kids
+            qs = qs.filter(with_kids=sqpd('С детьми|with kids'))
+        elif self.is_valid_queryparam(sqpd('С детьми|with kids')):
+            qs = qs.filter(with_kids=with_kids('С детьми|with kids'))
+
+        if self.is_valid_queryparam(district):
+            self.QUERY_PARAMS_DICT['Район | District'] = district
+            qs = qs.filter(with_kids=sqpd('Район | District'))
+        elif self.is_valid_queryparam(sqpd('Район | District')):
+            qs = qs.filter(with_kids=with_kids('Район | District'))
 
         if self.is_valid_queryparam(self.listing_queryparams(self.request, 'house_type')):
             self.QUERY_PARAMS_DICT['Тип жилья|housing type'] = self.listing_queryparams(self.request, 'house_type')
-            qs = qs.filter(house_type__in=self.QUERY_PARAMS_DICT.get('Тип жилья|housing type'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Тип жилья|housing type')):
-            qs = qs.filter(house_type__in=self.QUERY_PARAMS_DICT.get('Тип жилья|housing type'))
+            qs = qs.filter(house_type__in=sqpd('Тип жилья|housing type'))
+        elif self.is_valid_queryparam(sqpd('Тип жилья|housing type')):
+            qs = qs.filter(house_type__in=sqpd('Тип жилья|housing type'))
 
         if self.is_valid_queryparam(self.listing_queryparams(self.request, 'n_rooms')):
             self.QUERY_PARAMS_DICT['Количество комнат|number of rooms'] = self.listing_queryparams(self.request, 'n_rooms')
@@ -132,10 +144,10 @@ class HousingOfferListView(TemplateView):
             qs = qs.filter(internet__in=self.QUERY_PARAMS_DICT.get('Интернет|internet'))
 
         if self.is_valid_queryparam(self.request.GET.get('number_living')):
-            self.QUERY_PARAMS_DICT['Мак.проживающих|Max.lodgers'] = self.request.GET.get('number_living')
-            qs = qs.filter(number_of_lodgers__lte=self.QUERY_PARAMS_DICT.get('Мак.проживающих|Max.lodgers'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Мак.проживающих|Max.lodgers')):
-            qs = qs.filter(number_of_lodgers__lte=self.QUERY_PARAMS_DICT.get('Мак.проживающих|Max.lodgers'))
+            self.QUERY_PARAMS_DICT['Макc.проживающих|Max.lodgers'] = self.request.GET.get('number_living')
+            qs = qs.filter(number_of_lodgers__lte=self.QUERY_PARAMS_DICT.get('Макc.проживающих|Max.lodgers'))
+        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Макc.проживающих|Max.lodgers')):
+            qs = qs.filter(number_of_lodgers__lte=self.QUERY_PARAMS_DICT.get('Макc.проживающих|Max.lodgers'))
 
         if self.is_valid_queryparam(self.request.GET.get('freespace')):
             self.QUERY_PARAMS_DICT['Свободно мест|free space'] = self.request.GET.get('freespace')

@@ -80,6 +80,11 @@
           </div>
 <!--with_kids//-->
    <hr>
+<!--District-->
+           <label for="district" class="form-label">Район | District</label>
+               <input name="district" class="form-control" type="text" maxlength="50" placeholder="Введите название | Input district name" id="district" aria-label=" input district">
+<!--District//-->
+   <hr>
 <!--house_type-->
        <label class="form-check-label" for="">Тип жилья | Housing type</label>
          <div class="form-check">
@@ -167,29 +172,29 @@
                <hr>
 <!--MaxLiving-->
                <label for="number_living" class="form-label">Максимум проживающих | Max. lodgers</label>
-               <input name="number_living" class="form-control" type="text" placeholder="Введите число | Input number" id="number_living" aria-label=" input number_living">
+               <input name="number_living" class="form-control" type="number" min="1" placeholder="Введите число | Input number" id="number_living" aria-label=" input number_living">
 <!--MaxLiving//-->
                <hr>
 <!--freespace-->
                <label for="freespace" class="form-label">Свободны места для ... человек | free space for ... person</label>
-               <input name="freespace" class="form-control" type="text" placeholder="Введите число | Input number" id="freespace" aria-label=" input freespace">
+               <input name="freespace" class="form-control" type="number" min="1" placeholder="Введите число | Input number" id="freespace" aria-label=" input freespace">
 <!--freespace//-->
                <hr>
 <!--MinMaxCoast-->
              <div class="row">
                <label for="min_cost" class="form-label">Минимальная и/или максимальная сумма аренды на человека в USD/месяц | Minimum and/or maximum rental amount per person, USD/month</label>
                <div class="col">
-                   <input name="min_cost" class="form-control" type="text" placeholder="Min $/month" id="min_cost" aria-label="input minprice">
+                   <input name="min_cost" class="form-control" type="number" min="0" placeholder="Min $/month" id="min_cost" aria-label="input minprice">
                </div>
                <div class="col">
-                   <input name="max_cost" class="form-control" type="text" placeholder="Max $/month" id="max_cost" aria-label="input max_cost">
+                   <input name="max_cost" class="form-control" type="number" min="0" placeholder="Max $/month" id="max_cost" aria-label="input max_cost">
                </div>
             </div>
 <!--MinMaxCoast//-->
                <hr>
 <!--MinMaxRentalPeriod-->
                <label for="min_rental_period" class="form-label">Минимальный срок аренды в месяцах не более | Minimum rental period in months no more </label>
-                   <input name="min_rental_period" class="form-control" type="text" placeholder="Min months" id="min_rental_period" aria-label="input min_rental_period">
+                   <input name="min_rental_period" class="form-control" type="number" min="1" placeholder="Min months" id="min_rental_period" aria-label="input min_rental_period">
 
 <!--MinMaxRentalPeriod//-->
                <hr>
@@ -250,16 +255,16 @@
                             <div class="row">
                                <div class="col">
                                    <dl class="row">
-                                       <dt class="col-4">Помещение/Housing</dt>
-                                      <dd class="col-8">{{ offer.get_house_type_display }}; комнаты/rooms: {{ offer.get_number_of_rooms_display }}; площадь/area {{ offer.house_area }} m2</dd>
-                                      <dt class="col-4">Сдается для/For rent for</dt>
-                                      <dd class="col-8">{{ offer.get_lodger_desired_sex_display }}</dd>
-                                      <dt class="col-4">Сейчас живут/Currently living lodgers</dt>
-                                      <dd class="col-8">{{ offer.get_sex_of_living_lodgers_display}}</dd>
-                                       <dt class="col-4">Стоимость аренды на человека/ Rental amount per person</dt>
-                                      <dd class="col-8">{{ offer.cost_per_person }}$/month | месяц</dd>
-                                       <dt class="col-4">Свободно мест</dt>
-                                       <dd class="col-8">{{ offer.free_space_for_num_person }}</dd>
+                                       <dt class="col-4 text-muted">Помещение | Housing</dt>
+                                      <dd class="col-8"><b>{{ offer.get_house_type_display }}</b>; комнаты | rooms: <b>{{ offer.get_number_of_rooms_display }}</b>; площадь | area <b>{{ offer.house_area }} m2</b></dd>
+                                      <dt class="col-4 text-muted">Сдается для | For rent for</dt>
+                                      <dd class="col-8"><b>{{ offer.get_desired_lodgers_gender_display }}</b></dd>
+                                      <dt class="col-4 text-muted">Сейчас живут | Gender of current tenants</dt>
+                                      <dd class="col-8"><b>{{ offer.get_sex_of_now_lodgers_display}}</b></dd>
+                                       <dt class="col-4 text-muted">Стоимость аренды на человека | Rental amount per person</dt>
+                                      <dd class="col-8"><b>{{ offer.cost_per_person }}$</b> per month | в месяц</dd>
+                                       <dt class="col-4 text-muted">Свободно мест | Free space for lodgers</dt>
+                                       <dd class="col-8"><b>{{ offer.free_space_for_num_person }}</b></dd>
                                    </dl>
                                </div>
                             </div>

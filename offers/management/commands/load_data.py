@@ -13,7 +13,7 @@ class Command(BaseCommand):
         with open(filename, 'r') as json_file:
             data = json.load(json_file)
 
-            control = []
+            control = []  # todo: add district to the city name
             for row in data:
                 if row['country_name'] in control:
                     continue
