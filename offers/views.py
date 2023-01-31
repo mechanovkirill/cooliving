@@ -76,42 +76,39 @@ class HousingOfferListView(TemplateView):
 
     def get_queryset(self):
         qs = Offer.objects.filter(is_active=True).filter(city__city=self.CITY_SELECTED.get('city'))
-        gender = self.request.GET.get('sex')
-        gender_of_living = self.request.GET.get('gender_of_living')
-        district = self.request.GET.get('district')
-        with_kids = self.request.GET.get('with_kids')
 
-        sqpd = self.QUERY_PARAMS_DICT.get
+        srgg = self.request.GET.get
+        sqpdg = self.QUERY_PARAMS_DICT.get
 
-        if self.is_valid_queryparam(gender):
-            self.QUERY_PARAMS_DICT['Пол|gender'] = gender
-            qs = qs.filter(desired_lodgers_gender=sqpd('Пол|gender'))
-        elif self.is_valid_queryparam(sqpd('Пол|gender')):
-            qs = qs.filter(desired_lodgers_gender=sqpd('Пол|gender'))
+        if self.is_valid_queryparam(srgg('sex')):
+            self.QUERY_PARAMS_DICT['Пол|gender'] = srgg('sex')
+            qs = qs.filter(desired_lodgers_gender=sqpdg('Пол|gender'))
+        elif self.is_valid_queryparam(sqpdg('Пол|gender')):
+            qs = qs.filter(desired_lodgers_gender=sqpdg('Пол|gender'))
 
-        if self.is_valid_queryparam(gender_of_living):
-            self.QUERY_PARAMS_DICT['Проживают|people living'] = gender_of_living
-            qs = qs.filter(sex_of_now_lodgers=sqpd('Проживают|people living'))
-        elif self.is_valid_queryparam(sqpd('Проживают|people living')):
-            qs = qs.filter(sex_of_now_lodgers=sqpd('Проживают|people living'))
+        if self.is_valid_queryparam(srgg('gender_of_living')):
+            self.QUERY_PARAMS_DICT['Проживают|people living'] = srgg('gender_of_living')
+            qs = qs.filter(sex_of_now_lodgers=sqpdg('Проживают|people living'))
+        elif self.is_valid_queryparam(sqpdg('Проживают|people living')):
+            qs = qs.filter(sex_of_now_lodgers=sqpdg('Проживают|people living'))
 
-        if self.is_valid_queryparam(with_kids):
-            self.QUERY_PARAMS_DICT['С детьми|with kids'] = with_kids
-            qs = qs.filter(with_kids=sqpd('С детьми|with kids'))
-        elif self.is_valid_queryparam(sqpd('С детьми|with kids')):
-            qs = qs.filter(with_kids=with_kids('С детьми|with kids'))
+        if self.is_valid_queryparam(srgg('with_kids')):
+            self.QUERY_PARAMS_DICT['С детьми|with kids'] = srgg('with_kids')
+            qs = qs.filter(with_kids=sqpdg('С детьми|with kids'))
+        elif self.is_valid_queryparam(sqpdg('С детьми|with kids')):
+            qs = qs.filter(with_kids=sqpdg('С детьми|with kids'))
 
-        if self.is_valid_queryparam(district):
-            self.QUERY_PARAMS_DICT['Район | District'] = district
-            qs = qs.filter(with_kids=sqpd('Район | District'))
-        elif self.is_valid_queryparam(sqpd('Район | District')):
-            qs = qs.filter(with_kids=with_kids('Район | District'))
+        if self.is_valid_queryparam(srgg('district')):
+            self.QUERY_PARAMS_DICT['Район | District'] = srgg('district')
+            qs = qs.filter(district__icontains=sqpdg('Район | District'))
+        elif self.is_valid_queryparam(sqpdg('Район | District')):
+            qs = qs.filter(district__icontains=sqpdg('Район | District'))
 
         if self.is_valid_queryparam(self.listing_queryparams(self.request, 'house_type')):
             self.QUERY_PARAMS_DICT['Тип жилья|housing type'] = self.listing_queryparams(self.request, 'house_type')
-            qs = qs.filter(house_type__in=sqpd('Тип жилья|housing type'))
-        elif self.is_valid_queryparam(sqpd('Тип жилья|housing type')):
-            qs = qs.filter(house_type__in=sqpd('Тип жилья|housing type'))
+            qs = qs.filter(house_type__in=sqpdg('Тип жилья|housing type'))
+        elif self.is_valid_queryparam(sqpdg('Тип жилья|housing type')):
+            qs = qs.filter(house_type__in=sqpdg('Тип жилья|housing type'))
 
         if self.is_valid_queryparam(self.listing_queryparams(self.request, 'n_rooms')):
             self.QUERY_PARAMS_DICT['Количество комнат|number of rooms'] = self.listing_queryparams(self.request, 'n_rooms')
@@ -119,65 +116,107 @@ class HousingOfferListView(TemplateView):
         elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Количество комнат|number of rooms')):
             qs = qs.filter(number_of_rooms__in=self.QUERY_PARAMS_DICT.get('Количество комнат|number of rooms'))
 
-        if self.is_valid_queryparam(self.request.GET.get('interior_condition')):
-            self.QUERY_PARAMS_DICT['Отделка|interior'] = self.request.GET.get('interior_condition')
-            qs = qs.filter(interior_condition=self.QUERY_PARAMS_DICT.get('Отделка|interior'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Отделка|interior')):
-            qs = qs.filter(interior_condition=self.QUERY_PARAMS_DICT.get('Отделка|interior'))
+        if self.is_valid_queryparam(srgg('interior_condition')):
+            self.QUERY_PARAMS_DICT['Отделка|interior'] = srgg('interior_condition')
+            qs = qs.filter(interior_condition=sqpdg('Отделка|interior'))
+        elif self.is_valid_queryparam(sqpdg('Отделка|interior')):
+            qs = qs.filter(interior_condition=sqpdg('Отделка|interior'))
 
-        if self.is_valid_queryparam(self.request.GET.get('furniture')):
-            self.QUERY_PARAMS_DICT['Мебель|furniture'] = self.request.GET.get('furniture')
-            qs = qs.filter(furniture=self.QUERY_PARAMS_DICT.get('Мебель|furniture'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Мебель|furniture')):
-            qs = qs.filter(furniture=self.QUERY_PARAMS_DICT.get('Мебель|furniture'))
+        if self.is_valid_queryparam(srgg('furniture')):
+            self.QUERY_PARAMS_DICT['Мебель|furniture'] = srgg('furniture')
+            qs = qs.filter(furniture=sqpdg('Мебель|furniture'))
+        elif self.is_valid_queryparam(sqpdg('Мебель|furniture')):
+            qs = qs.filter(furniture=sqpdg('Мебель|furniture'))
 
-        if self.is_valid_queryparam(self.request.GET.get('heating')):
-            self.QUERY_PARAMS_DICT['Отопление|heating'] = self.request.GET.get('heating')
-            qs = qs.filter(heating=self.QUERY_PARAMS_DICT.get('Отопление|heating'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Отопление|heating')):
-            qs = qs.filter(heating=self.QUERY_PARAMS_DICT.get('Отопление|heating'))
+        if self.is_valid_queryparam(srgg('appliances')):
+            self.QUERY_PARAMS_DICT['Бытовая техника|Appliances'] = srgg('appliances')
+            qs = qs.filter(furniture=sqpdg('Бытовая техника|Appliances'))
+        elif self.is_valid_queryparam(sqpdg('Бытовая техника|Appliances')):
+            qs = qs.filter(furniture=sqpdg('Бытовая техника|Appliances'))
+
+        if self.is_valid_queryparam(srgg('heating')):
+            self.QUERY_PARAMS_DICT['Отопление|heating'] = srgg('heating')
+            qs = qs.filter(heating=sqpdg('Отопление|heating'))
+        elif self.is_valid_queryparam(sqpdg('Отопление|heating')):
+            qs = qs.filter(heating=sqpdg('Отопление|heating'))
 
         if self.is_valid_queryparam(self.listing_queryparams(self.request, 'internet_op')):
             self.QUERY_PARAMS_DICT['Интернет|internet'] = self.listing_queryparams(self.request, 'internet_op')
-            qs = qs.filter(internet__in=self.QUERY_PARAMS_DICT.get('Интернет|internet'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Интернет|internet')):
-            qs = qs.filter(internet__in=self.QUERY_PARAMS_DICT.get('Интернет|internet'))
+            qs = qs.filter(internet__in=sqpdg('Интернет|internet'))
+        elif self.is_valid_queryparam(sqpdg('Интернет|internet')):
+            qs = qs.filter(internet__in=sqpdg('Интернет|internet'))
 
-        if self.is_valid_queryparam(self.request.GET.get('number_living')):
-            self.QUERY_PARAMS_DICT['Макc.проживающих|Max.lodgers'] = self.request.GET.get('number_living')
-            qs = qs.filter(number_of_lodgers__lte=self.QUERY_PARAMS_DICT.get('Макc.проживающих|Max.lodgers'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Макc.проживающих|Max.lodgers')):
-            qs = qs.filter(number_of_lodgers__lte=self.QUERY_PARAMS_DICT.get('Макc.проживающих|Max.lodgers'))
+        if self.is_valid_queryparam(srgg('number_living')):
+            self.QUERY_PARAMS_DICT['Макc.проживающих|Max.lodgers'] = srgg('number_living')
+            qs = qs.filter(number_of_lodgers__lte=sqpdg('Макc.проживающих|Max.lodgers'))
+        elif self.is_valid_queryparam(sqpdg('Макc.проживающих|Max.lodgers')):
+            qs = qs.filter(number_of_lodgers__lte=sqpdg('Макc.проживающих|Max.lodgers'))
 
-        if self.is_valid_queryparam(self.request.GET.get('freespace')):
-            self.QUERY_PARAMS_DICT['Свободно мест|free space'] = self.request.GET.get('freespace')
-            qs = qs.filter(free_space_for_num_person__lte=self.QUERY_PARAMS_DICT.get('Свободно мест|free space'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Свободно мест|free space')):
-            qs = qs.filter(free_space_for_num_person__lte=self.QUERY_PARAMS_DICT.get('Свободно мест|free space'))
+        if self.is_valid_queryparam(srgg('freespace')):
+            self.QUERY_PARAMS_DICT['Свободно мест|free space'] = srgg('freespace')
+            qs = qs.filter(free_space_for_num_person__lte=sqpdg('Свободно мест|free space'))
+        elif self.is_valid_queryparam(sqpdg('Свободно мест|free space')):
+            qs = qs.filter(free_space_for_num_person__lte=sqpdg('Свободно мест|free space'))
 
-        if self.is_valid_queryparam(self.request.GET.get('min_cost')):
-            self.QUERY_PARAMS_DICT['Минимальная цена|min. price'] = self.request.GET.get('min_cost')
-            qs = qs.filter(cost_per_person__gte=self.QUERY_PARAMS_DICT.get('Минимальная цена|min. price'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Минимальная цена|min. price')):
-            qs = qs.filter(cost_per_person__gte=self.QUERY_PARAMS_DICT.get('Минимальная цена|min. price'))
+        if self.is_valid_queryparam(srgg('min_cost')):
+            self.QUERY_PARAMS_DICT['Минимальная цена|min. price'] = srgg('min_cost')
+            qs = qs.filter(cost_per_person__gte=sqpdg('Минимальная цена|min. price'))
+        elif self.is_valid_queryparam(sqpdg('Минимальная цена|min. price')):
+            qs = qs.filter(cost_per_person__gte=sqpdg('Минимальная цена|min. price'))
 
-        if self.is_valid_queryparam(self.request.GET.get('max_cost')):
-            self.QUERY_PARAMS_DICT['Минимальная цена|min. price'] = self.request.GET.get('max_cost')
-            qs = qs.filter(cost_per_person__lte=self.QUERY_PARAMS_DICT.get('Свободно мест|free space'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Свободно мест|free space')):
-            qs = qs.filter(cost_per_person__lte=self.QUERY_PARAMS_DICT.get('Свободно мест|free space'))
+        if self.is_valid_queryparam(srgg('max_cost')):
+            self.QUERY_PARAMS_DICT['Минимальная цена|min. price'] = srgg('max_cost')
+            qs = qs.filter(cost_per_person__lte=sqpdg('Свободно мест|free space'))
+        elif self.is_valid_queryparam(sqpdg('Свободно мест|free space')):
+            qs = qs.filter(cost_per_person__lte=sqpdg('Свободно мест|free space'))
 
-        if self.is_valid_queryparam(self.request.GET.get('min_rental_period')):
-            self.QUERY_PARAMS_DICT['Период аренды|rental period'] = self.request.GET.get('min_rental_period')
-            qs = qs.filter(min_rental_period__lte=self.QUERY_PARAMS_DICT.get('Период аренды|rental period'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('Период аренды|rental period')):
-            qs = qs.filter(min_rental_period__lte=self.QUERY_PARAMS_DICT.get('Период аренды|rental period'))
+        if self.is_valid_queryparam(srgg('min_rental_period')):
+            self.QUERY_PARAMS_DICT['Период аренды|rental period'] = srgg('min_rental_period')
+            qs = qs.filter(min_rental_period__lte=sqpdg('Период аренды|rental period'))
+        elif self.is_valid_queryparam(sqpdg('Период аренды|rental period')):
+            qs = qs.filter(min_rental_period__lte=sqpdg('Период аренды|rental period'))
 
-        if self.is_valid_queryparam(self.request.GET.get('with_animals')):
-            self.QUERY_PARAMS_DICT['С животными|with animals'] = self.request.GET.get('with_animals')
-            qs = qs.filter(with_animals=self.QUERY_PARAMS_DICT.get('С животными|with animals'))
-        elif self.is_valid_queryparam(self.QUERY_PARAMS_DICT.get('С животными|with animals')):
-            qs = qs.filter(with_animals=self.QUERY_PARAMS_DICT.get('С животными|with animals'))
+        if self.is_valid_queryparam(srgg('separate_room')):
+            self.QUERY_PARAMS_DICT['Отдельная комната|has separate room'] = srgg('separate_room')
+            qs = qs.filter(separate_room=sqpdg('Отдельная комната|has separate room'))
+        elif self.is_valid_queryparam(sqpdg('Отдельная комната|has separate room')):
+            qs = qs.filter(separate_room=sqpdg('Отдельная комната|has separate room'))
+
+        if self.is_valid_queryparam(srgg('has_balcony')):
+            self.QUERY_PARAMS_DICT['Есть балкон|Has balcony'] = srgg('has_balcony')
+            qs = qs.filter(has_balcony=sqpdg('Есть балкон|Has balcony'))
+        elif self.is_valid_queryparam(sqpdg('Есть балкон|Has balcony')):
+            qs = qs.filter(has_balcony=sqpdg('Есть балкон|Has balcony'))
+
+        if self.is_valid_queryparam(srgg('has_loggia')):
+            self.QUERY_PARAMS_DICT['Есть лоджия|Has loggia'] = srgg('has_loggia')
+            qs = qs.filter(has_loggia=sqpdg('Есть лоджия|Has loggia'))
+        elif self.is_valid_queryparam(sqpdg('Есть лоджия|Has loggia')):
+            qs = qs.filter(has_loggia=sqpdg('Есть лоджия|Has loggia'))
+
+        if self.is_valid_queryparam(srgg('has_parking')):
+            self.QUERY_PARAMS_DICT['Есть парковка|Has parking'] = srgg('has_parking')
+            qs = qs.filter(has_parking=sqpdg('Есть парковка|Has parking'))
+        elif self.is_valid_queryparam(sqpdg('Есть парковка|Has parking')):
+            qs = qs.filter(has_parking=sqpdg('Есть парковка|Has parking'))
+
+        if self.is_valid_queryparam(srgg('transport_nearby')):
+            self.QUERY_PARAMS_DICT['Транспорт рядом|Transport nearby'] = srgg('transport_nearby')
+            qs = qs.filter(transport_nearby=sqpdg('Транспорт рядом|Transport nearby'))
+        elif self.is_valid_queryparam(sqpdg('Транспорт рядом|Transport nearby')):
+            qs = qs.filter(transport_nearby=sqpdg('Транспорт рядом|Transport nearby'))
+
+        if self.is_valid_queryparam(srgg('with_animals')):
+            self.QUERY_PARAMS_DICT['С животными|with animals'] = srgg('with_animals')
+            qs = qs.filter(with_animals=sqpdg('С животными|with animals'))
+        elif self.is_valid_queryparam(sqpdg('С животными|with animals')):
+            qs = qs.filter(with_animals=sqpdg('С животными|with animals'))
+
+        if self.is_valid_queryparam(srgg('can_smoke')):
+            self.QUERY_PARAMS_DICT['Можно курить|Smoking allowed'] = srgg('can_smoke')
+            qs = qs.filter(can_smoke=sqpdg('Можно курить|Smoking allowed'))
+        elif self.is_valid_queryparam(sqpdg('Можно курить|Smoking allowed')):
+            qs = qs.filter(can_smoke=sqpdg('Можно курить|Smoking allowed'))
 
         if self.is_valid_queryparam(self.request.GET.get('discard_filters')):
             self.QUERY_PARAMS_DICT.clear()

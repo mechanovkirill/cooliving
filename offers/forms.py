@@ -43,7 +43,7 @@ class OfferForm(forms.ModelForm):
             'cost_per_person': _('Сумма аренды на человека | Rental amount per person'),
             'average_utility_bill': _('Средняя стоимость коммунальных услуг | Average utility bill'),
             'min_rental_period': _('Минимальный период аренды | Minimal rental period'),
-            'separate_room': _('Отдельная комната | Separate room'),
+            'separate_room': _('Предлагается отдельная комната | Separate room available'),
             'has_balcony': _('Есть балкон | Has balcony'),
             'has_loggia': _('Есть лоджия | Has loggia'),
             'has_parking': _('Есть парковка | Has parking'),
